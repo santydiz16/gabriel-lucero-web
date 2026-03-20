@@ -8,32 +8,31 @@ import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
-const VARIANT = "dark" as const;
+const VARIANT = "minimal" as const;
 
-export default function Home() {
+export default function MinimalPage() {
   return (
     <div className={`theme-${VARIANT}`}>
       {/* Theme toggle hint */}
       <a
-        href="/minimal"
+        href="/"
         style={{
           position: "fixed",
           bottom: "24px",
           right: "24px",
           zIndex: 200,
-          background: "rgba(201,168,92,0.15)",
-          border: "1px solid rgba(201,168,92,0.3)",
-          color: "#C9A85C",
+          background: "rgba(0,0,0,0.05)",
+          border: "1px solid rgba(0,0,0,0.12)",
+          color: "#888",
           fontSize: "0.65rem",
           letterSpacing: "0.12em",
           textTransform: "uppercase",
           padding: "8px 14px",
           textDecoration: "none",
-          backdropFilter: "blur(8px)",
           transition: "background 0.2s",
         }}
       >
-        Ver versión minimal →
+        ← Ver versión oscura
       </a>
 
       <Navbar variant={VARIANT} />

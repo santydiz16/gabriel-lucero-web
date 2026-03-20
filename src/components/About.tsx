@@ -1,0 +1,264 @@
+"use client";
+
+import AnimateIn from "./AnimateIn";
+import { Instagram, Camera, Film, Award } from "lucide-react";
+
+const stats = [
+  { value: "6+", label: "Años de experiencia" },
+  { value: "200+", label: "Bodas filmadas" },
+  { value: "8", label: "Países" },
+  { value: "100%", label: "Parejas satisfechas" },
+];
+
+export default function About({ variant }: { variant: "dark" | "minimal" }) {
+  const isDark = variant === "dark";
+
+  return (
+    <section
+      id="nosotros"
+      style={{
+        padding: "120px 0",
+        background: isDark ? "var(--bg-3)" : "var(--bg-2)",
+      }}
+    >
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "80px",
+            alignItems: "center",
+          }}
+        >
+          {/* Photo side */}
+          <AnimateIn direction="right">
+            <div style={{ position: "relative" }}>
+              {/* Main photo placeholder */}
+              <div
+                style={{
+                  aspectRatio: "3/4",
+                  background: isDark
+                    ? "linear-gradient(135deg, #1a1208 0%, #2d1f0a 50%, #1a1208 100%)"
+                    : "linear-gradient(135deg, #e8e4dc 0%, #d0ccc4 100%)",
+                  border: isDark ? "1px solid var(--border-subtle)" : "none",
+                  position: "relative",
+                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Camera
+                  size={48}
+                  style={{ color: isDark ? "rgba(201,168,92,0.3)" : "rgba(0,0,0,0.1)" }}
+                />
+                {/* NOTE: Replace with <Image src="/gabriel.jpg" alt="Gabriel Lucero" fill style={{objectFit:'cover'}} /> */}
+                <p
+                  style={{
+                    position: "absolute",
+                    bottom: "16px",
+                    left: "16px",
+                    right: "16px",
+                    fontSize: "0.65rem",
+                    color: isDark ? "rgba(201,168,92,0.4)" : "rgba(0,0,0,0.2)",
+                    textAlign: "center",
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  [ Reemplazar con foto de Gabriel ]
+                </p>
+              </div>
+
+              {/* Floating accent element */}
+              {isDark && (
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "-20px",
+                    right: "-20px",
+                    width: "120px",
+                    height: "120px",
+                    border: "1px solid var(--border)",
+                    background: "var(--bg)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <Film size={24} style={{ color: "var(--gold)" }} />
+                  <span
+                    style={{
+                      fontSize: "0.6rem",
+                      letterSpacing: "0.15em",
+                      textTransform: "uppercase",
+                      color: "var(--text-2)",
+                      textAlign: "center",
+                    }}
+                  >
+                    Wedding
+                    <br />
+                    Film
+                  </span>
+                </div>
+              )}
+            </div>
+          </AnimateIn>
+
+          {/* Text side */}
+          <div>
+            <AnimateIn direction="left">
+              <p
+                style={{
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase",
+                  color: "var(--gold)",
+                  marginBottom: "1rem",
+                }}
+              >
+                Sobre mí
+              </p>
+              <h2
+                className="heading-serif"
+                style={{
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  fontWeight: isDark ? 400 : 300,
+                  color: "var(--text)",
+                  margin: "0 0 2rem",
+                  lineHeight: 1.1,
+                  letterSpacing: isDark ? "-0.01em" : "-0.03em",
+                }}
+              >
+                {isDark ? (
+                  <>
+                    Hola, soy Gabriel.
+                    <br />
+                    <em>Cuento historias</em>
+                    <br />
+                    con una cámara.
+                  </>
+                ) : (
+                  <>
+                    Hola, soy Gabriel.
+                    <br />
+                    Cuento historias
+                    <br />
+                    con una cámara.
+                  </>
+                )}
+              </h2>
+            </AnimateIn>
+
+            <AnimateIn direction="left" delay={0.1}>
+              <p
+                style={{
+                  fontSize: "0.95rem",
+                  color: "var(--text-2)",
+                  lineHeight: 1.8,
+                  margin: "0 0 1.2rem",
+                }}
+              >
+                Soy videógrafo especializado en bodas, apasionado por capturar
+                la autenticidad de cada momento. Creo que cada pareja tiene una
+                historia única que merece ser contada con belleza y emoción.
+              </p>
+              <p
+                style={{
+                  fontSize: "0.95rem",
+                  color: "var(--text-2)",
+                  lineHeight: 1.8,
+                  margin: "0 0 2.5rem",
+                }}
+              >
+                Con más de 6 años de experiencia y habiendo filmado bodas en
+                Argentina, Colombia, Italia y más, mi enfoque siempre es el
+                mismo: ser invisible el día de la boda para que puedan ser
+                completamente libres, y crear una película que les quite el
+                aliento.
+              </p>
+            </AnimateIn>
+
+            {/* Stats */}
+            <AnimateIn direction="left" delay={0.15}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: "1.5rem",
+                  marginBottom: "2.5rem",
+                }}
+              >
+                {stats.map((stat) => (
+                  <div key={stat.label}>
+                    <div
+                      className="heading-serif"
+                      style={{
+                        fontSize: "2rem",
+                        fontWeight: isDark ? 400 : 300,
+                        color: isDark ? "var(--gold)" : "var(--text)",
+                        lineHeight: 1,
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {stat.value}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--text-2)",
+                        letterSpacing: "0.05em",
+                      }}
+                    >
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </AnimateIn>
+
+            {/* Social */}
+            <AnimateIn direction="left" delay={0.2}>
+              <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                <a
+                  href="https://www.instagram.com/gabriellucero.ph"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    color: "var(--text-2)",
+                    textDecoration: "none",
+                    fontSize: "0.8rem",
+                    transition: "color 0.2s",
+                    border: "1px solid var(--border)",
+                    padding: "10px 20px",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-2)")}
+                >
+                  <Instagram size={16} />
+                  @gabriellucero.ph
+                </a>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    color: "var(--gold)",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  <Award size={14} />
+                  <span style={{ letterSpacing: "0.05em" }}>Premiado 2023</span>
+                </div>
+              </div>
+            </AnimateIn>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

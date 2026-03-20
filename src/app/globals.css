@@ -1,26 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-playfair: 'Playfair Display', Georgia, serif;
+  --font-inter: 'Inter', system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Dark Elegant Theme */
+.theme-dark {
+  --bg: #080808;
+  --bg-2: #111111;
+  --bg-3: #1A1A1A;
+  --text: #F5F0E8;
+  --text-2: #9A8F7F;
+  --text-3: #5A5045;
+  --gold: #C9A85C;
+  --gold-hover: #D9BC78;
+  --gold-dim: rgba(201, 168, 92, 0.15);
+  --border: rgba(201, 168, 92, 0.2);
+  --border-subtle: rgba(255,255,255,0.06);
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter);
+}
+
+/* Minimal Theme */
+.theme-minimal {
+  --bg: #FAFAF8;
+  --bg-2: #F0EEE8;
+  --bg-3: #FFFFFF;
+  --text: #1A1A1A;
+  --text-2: #888888;
+  --text-3: #BBBBBB;
+  --gold: #1A1A1A;
+  --gold-hover: #333333;
+  --gold-dim: rgba(0,0,0,0.04);
+  --border: rgba(0,0,0,0.1);
+  --border-subtle: rgba(0,0,0,0.06);
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter);
+}
+
+/* Shared utilities */
+.heading-serif {
+  font-family: var(--font-playfair);
+}
+
+.theme-minimal .heading-serif {
+  font-family: var(--font-inter);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+
+/* Custom scrollbar */
+.theme-dark ::-webkit-scrollbar {
+  width: 4px;
+}
+.theme-dark ::-webkit-scrollbar-track {
+  background: #111;
+}
+.theme-dark ::-webkit-scrollbar-thumb {
+  background: #C9A85C;
+  border-radius: 2px;
+}
+
+/* Grain texture overlay for dark theme */
+.theme-dark .grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
 }
