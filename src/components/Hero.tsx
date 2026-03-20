@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
   const isDark = variant === "dark";
@@ -26,22 +27,22 @@ export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
       {/* Background */}
       {isDark ? (
         <>
-          {/* Dark: cinematic gradient background */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(135deg, #0a0a0a 0%, #1a1008 50%, #0a0a0a 100%)",
-            }}
+          {/* Real wedding photo base layer */}
+          <Image
+            src="https://images.unsplash.com/photo-1519741347686-c1e0aadf4611?w=1920&q=80&fit=crop&crop=center"
+            alt="Wedding ceremony"
+            fill
+            priority
+            style={{ objectFit: "cover", objectPosition: "center" }}
           />
+          {/* Dark cinematic overlay */}
+          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.68)" }} />
           {/* Subtle gold vignette */}
           <div
             style={{
               position: "absolute",
               inset: 0,
-              background:
-                "radial-gradient(ellipse at center, rgba(201,168,92,0.06) 0%, transparent 70%)",
+              background: "radial-gradient(ellipse at center, rgba(201,168,92,0.06) 0%, transparent 70%)",
             }}
           />
           {/* Film grain effect */}
@@ -54,38 +55,28 @@ export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
               opacity: 0.3,
             }}
           />
-          {/* Horizontal lines — cinematic letterbox feel */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "80px",
-              background: "linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: "120px",
-              background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
-            }}
-          />
+          {/* Letterbox top/bottom */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "120px", background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }} />
         </>
       ) : (
         <>
-          {/* Minimal: clean off-white with subtle lines */}
-          <div style={{ position: "absolute", inset: 0, background: "#FAFAF8" }} />
+          {/* Minimal: real light wedding photo */}
+          <Image
+            src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&q=80&fit=crop&crop=center"
+            alt="Wedding reception"
+            fill
+            priority
+            style={{ objectFit: "cover", objectPosition: "center top" }}
+          />
+          {/* Light overlay for readability */}
+          <div style={{ position: "absolute", inset: 0, background: "rgba(250,250,248,0.82)" }} />
           <div
             style={{
               position: "absolute",
               inset: 0,
               backgroundImage:
-                "linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)",
+                "linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)",
               backgroundSize: "60px 60px",
             }}
           />

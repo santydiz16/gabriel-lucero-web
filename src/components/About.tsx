@@ -1,7 +1,8 @@
 "use client";
 
 import AnimateIn from "./AnimateIn";
-import { Instagram, Camera, Film, Award } from "lucide-react";
+import { Instagram, Film, Award } from "lucide-react";
+import Image from "next/image";
 
 const stats = [
   { value: "6+", label: "Años de experiencia" },
@@ -33,40 +34,28 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
           {/* Photo side */}
           <AnimateIn direction="right">
             <div style={{ position: "relative" }}>
-              {/* Main photo placeholder */}
+              {/* Photographer photo */}
               <div
                 style={{
                   aspectRatio: "3/4",
-                  background: isDark
-                    ? "linear-gradient(135deg, #1a1208 0%, #2d1f0a 50%, #1a1208 100%)"
-                    : "linear-gradient(135deg, #e8e4dc 0%, #d0ccc4 100%)",
-                  border: isDark ? "1px solid var(--border-subtle)" : "none",
                   position: "relative",
                   overflow: "hidden",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  border: isDark ? "1px solid var(--border-subtle)" : "none",
                 }}
               >
-                <Camera
-                  size={48}
-                  style={{ color: isDark ? "rgba(201,168,92,0.3)" : "rgba(0,0,0,0.1)" }}
+                <Image
+                  src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800&q=80&fit=crop&crop=center"
+                  alt="Gabriel Lucero — Videógrafo de bodas"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: "cover", objectPosition: "center top" }}
                 />
-                {/* NOTE: Replace with <Image src="/gabriel.jpg" alt="Gabriel Lucero" fill style={{objectFit:'cover'}} /> */}
-                <p
-                  style={{
-                    position: "absolute",
-                    bottom: "16px",
-                    left: "16px",
-                    right: "16px",
-                    fontSize: "0.65rem",
-                    color: isDark ? "rgba(201,168,92,0.4)" : "rgba(0,0,0,0.2)",
-                    textAlign: "center",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  [ Reemplazar con foto de Gabriel ]
-                </p>
+                {isDark && (
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(to top, rgba(8,8,8,0.4) 0%, transparent 60%)",
+                  }} />
+                )}
               </div>
 
               {/* Floating accent element */}

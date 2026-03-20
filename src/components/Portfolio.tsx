@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimateIn from "./AnimateIn";
-import { Play, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const categories = ["Todo", "Bodas", "Preboda", "Destino"];
 
@@ -13,59 +14,49 @@ const items = [
     title: "Camila & Martín",
     category: "Bodas",
     location: "Mendoza, Argentina",
-    seed: "wedding1",
     size: "large",
+    photo: "https://images.unsplash.com/photo-1519741347686-c1e0aadf4611?w=1200&q=80&fit=crop&crop=center",
   },
   {
     id: 2,
     title: "Valentina & Sebastián",
     category: "Preboda",
     location: "Buenos Aires",
-    seed: "couple2",
     size: "small",
+    photo: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80&fit=crop&crop=center",
   },
   {
     id: 3,
     title: "Lucía & Agustín",
     category: "Destino",
     location: "Cartagena, Colombia",
-    seed: "wedding3",
     size: "small",
+    photo: "https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?w=800&q=80&fit=crop&crop=center",
   },
   {
     id: 4,
     title: "Sofía & Nicolás",
     category: "Bodas",
     location: "Córdoba, Argentina",
-    seed: "wedding4",
     size: "medium",
+    photo: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1000&q=80&fit=crop&crop=center",
   },
   {
     id: 5,
     title: "Florencia & Diego",
     category: "Preboda",
     location: "Tigre, Buenos Aires",
-    seed: "couple5",
     size: "medium",
+    photo: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1000&q=80&fit=crop&crop=center",
   },
   {
     id: 6,
     title: "Antonella & Marcos",
     category: "Destino",
     location: "Toscana, Italia",
-    seed: "wedding6",
     size: "large",
+    photo: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1200&q=80&fit=crop&crop=center",
   },
-];
-
-// Gradient colors per item as placeholder for real images
-const gradients = [
-  "linear-gradient(135deg, #1a1208 0%, #2d1f0a 100%)",
-  "linear-gradient(135deg, #0f1520 0%, #1a2535 100%)",
-  "linear-gradient(135deg, #1a0f0f 0%, #2d1515 100%)",
-  "linear-gradient(135deg, #0a1a0a 0%, #152015 100%)",
-  "linear-gradient(135deg, #1a1520 0%, #2d2535 100%)",
-  "linear-gradient(135deg, #20150a 0%, #352510 100%)",
 ];
 
 export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) {
@@ -194,31 +185,18 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
                     aspectRatio,
                     overflow: "hidden",
                     cursor: "pointer",
-                    background: gradients[item.id - 1],
                   }}
                   onMouseEnter={() => setHovered(item.id)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  {/* Placeholder content to represent a photo */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Play
-                      size={32}
-                      style={{
-                        color: isDark ? "rgba(201,168,92,0.3)" : "rgba(0,0,0,0.1)",
-                      }}
-                    />
-                  </div>
-
-                  {/* NOTE: Replace the gradient background with real wedding photos.
-                      Example: <Image src="/portfolio/wedding-1.jpg" alt={item.title} fill style={{objectFit:'cover'}} /> */}
+                  {/* Real wedding photo */}
+                  <Image
+                    src={item.photo}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.6s ease" }}
+                  />
 
                   {/* Hover overlay */}
                   <motion.div
