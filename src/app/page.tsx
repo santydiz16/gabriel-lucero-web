@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Portfolio from "@/components/Portfolio";
 import Services from "@/components/Services";
+import Cart from "@/components/Cart";
 import Process from "@/components/Process";
 import Testimonials from "@/components/Testimonials";
 import About from "@/components/About";
@@ -40,6 +41,7 @@ export default function Home() {
       <Hero variant={VARIANT} />
       <Portfolio variant={VARIANT} />
       <Services variant={VARIANT} />
+      <Cart variant={VARIANT} />
       <Process variant={VARIANT} />
       <Testimonials variant={VARIANT} />
       <About variant={VARIANT} />
