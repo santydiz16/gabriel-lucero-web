@@ -22,6 +22,7 @@ export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
+        paddingBottom: "80px",
       }}
     >
       {/* Background */}
