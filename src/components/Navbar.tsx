@@ -90,7 +90,7 @@ export default function Navbar({ variant }: { variant: "dark" | "minimal" }) {
         </button>
 
         {/* Desktop nav */}
-        <nav style={{ display: "flex", gap: "2rem", alignItems: "center" }} className="hidden md:flex">
+        <nav style={{ gap: "2rem", alignItems: "center" }} className="hidden md:flex">
           {links.map((l) => (
             <button
               key={l.href}

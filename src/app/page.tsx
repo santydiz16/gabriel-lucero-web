@@ -20,7 +20,7 @@ export default function Home() {
         style={{
           position: "fixed",
           bottom: "24px",
-          right: "24px",
+          left: "24px",
           zIndex: 200,
           background: "rgba(201,168,92,0.15)",
           border: "1px solid rgba(201,168,92,0.3)",

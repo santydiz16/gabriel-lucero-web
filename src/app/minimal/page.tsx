@@ -20,7 +20,7 @@ export default function MinimalPage() {
         style={{
           position: "fixed",
           bottom: "24px",
-          right: "24px",
+          left: "24px",
           zIndex: 200,
           background: "rgba(0,0,0,0.05)",
           border: "1px solid rgba(0,0,0,0.12)",

@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import AnimateIn from "./AnimateIn";
-import { Instagram, MessageCircle, Send, Calendar } from "lucide-react";
+import { MessageCircle, Send, Calendar } from "lucide-react";
+
+const IgIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+  </svg>
+);
 
 export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
   const isDark = variant === "dark";
@@ -15,7 +21,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Here you'd integrate with a form service (Formspree, EmailJS, etc.)
     // For now, open WhatsApp with the message
@@ -80,7 +86,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                 letterSpacing: "0.08em",
               }}
             >
-              <strong>Fechas 2025 casi agotadas</strong> — Consultá disponibilidad ahora
+              <strong>Fechas 2026 casi agotadas</strong> — Consultá disponibilidad ahora
             </p>
           </div>
         </AnimateIn>
@@ -202,7 +208,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                     (e.currentTarget.style.borderColor = "var(--border-subtle)")
                   }
                 >
-                  <Instagram size={18} style={{ color: "var(--gold)" }} />
+                  <IgIcon />
                   <div>
                     <div style={{ fontWeight: 500 }}>@gabriellucero.ph</div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-2)" }}>
