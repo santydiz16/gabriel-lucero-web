@@ -29,7 +29,7 @@ export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
         <>
           {/* Real wedding photo base layer */}
           <Image
-            src="https://images.unsplash.com/photo-1519741347686-c1e0aadf4611?w=1920&q=80&fit=crop&crop=center"
+            src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=1920&q=80&fit=crop&crop=center"
             alt="Wedding ceremony"
             fill
             priority

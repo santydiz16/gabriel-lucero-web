@@ -15,7 +15,7 @@ const items = [
     category: "Bodas",
     location: "Mendoza, Argentina",
     size: "large",
-    photo: "https://images.unsplash.com/photo-1519741347686-c1e0aadf4611?w=1200&q=80&fit=crop&crop=center",
+    photo: "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=1200&q=80&fit=crop&crop=center",
   },
   {
     id: 2,
@@ -55,7 +55,7 @@ const items = [
     category: "Destino",
     location: "Toscana, Italia",
     size: "large",
-    photo: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80&fit=crop&crop=center",
+    photo: "https://images.unsplash.com/photo-1525772764200-be829a350797?w=1200&q=80&fit=crop&crop=center",
   },
 ];
 
