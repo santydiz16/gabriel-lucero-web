@@ -44,7 +44,7 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
                 }}
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800&q=80&fit=crop&crop=center"
+                  src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80&fit=crop&crop=center"
                   alt="Gabriel Lucero — Videógrafo de bodas"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"

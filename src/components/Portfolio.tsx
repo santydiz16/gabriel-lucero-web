@@ -23,7 +23,7 @@ const items = [
     category: "Preboda",
     location: "Buenos Aires",
     size: "small",
-    photo: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80&fit=crop&crop=center",
+    photo: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80&fit=crop&crop=center",
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const items = [
     category: "Destino",
     location: "Cartagena, Colombia",
     size: "small",
-    photo: "https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?w=800&q=80&fit=crop&crop=center",
+    photo: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=800&q=80&fit=crop&crop=center",
   },
   {
     id: 4,
@@ -47,7 +47,7 @@ const items = [
     category: "Preboda",
     location: "Tigre, Buenos Aires",
     size: "medium",
-    photo: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1000&q=80&fit=crop&crop=center",
+    photo: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1000&q=80&fit=crop&crop=center",
   },
   {
     id: 6,
@@ -55,7 +55,7 @@ const items = [
     category: "Destino",
     location: "Toscana, Italia",
     size: "large",
-    photo: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1200&q=80&fit=crop&crop=center",
+    photo: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80&fit=crop&crop=center",
   },
 ];
 
