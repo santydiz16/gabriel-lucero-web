@@ -85,7 +85,7 @@ export default function Navbar({ variant }: { variant: "dark" | "minimal" }) {
               textTransform: "uppercase",
             }}
           >
-            Wedding Film
+            Film & Producción
           </div>
         </button>
 

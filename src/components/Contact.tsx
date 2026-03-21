@@ -26,7 +26,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
     // Here you'd integrate with a form service (Formspree, EmailJS, etc.)
     // For now, open WhatsApp with the message
     const msg = encodeURIComponent(
-      `Hola Gabriel! Me llamo ${formData.nombre}.\n\nFecha de boda: ${formData.fecha}\nEmail: ${formData.email}\n\n${formData.mensaje}`
+      `Hola Gabriel! Me llamo ${formData.nombre}.\n\nFecha del evento: ${formData.fecha}\nEmail: ${formData.email}\n\n${formData.mensaje}`
     );
     window.open(`https://wa.me/5491100000000?text=${msg}`, "_blank");
     setSubmitted(true);
@@ -86,7 +86,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                 letterSpacing: "0.08em",
               }}
             >
-              <strong>Fechas 2026 casi agotadas</strong> — Consultá disponibilidad ahora
+              <strong>Fechas 2026 casi agotadas</strong> — Consultá disponibilidad para tu evento
             </p>
           </div>
         </AnimateIn>
@@ -293,7 +293,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                     />
                   </div>
                   <div>
-                    <label style={labelStyle}>Fecha de boda *</label>
+                    <label style={labelStyle}>Fecha del evento *</label>
                     <input
                       type="date"
                       required
@@ -310,7 +310,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                   <label style={labelStyle}>Contame sobre su historia</label>
                   <textarea
                     rows={4}
-                    placeholder="¿Dónde se conocieron? ¿Qué tipo de boda imaginan? ¿Tienen algún estilo en mente?"
+                    placeholder="¿Qué tipo de evento es? ¿Qué estilo imaginan? ¿Tienen locación en mente?"
                     value={formData.mensaje}
                     onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
                     style={{ ...inputStyle, resize: "vertical" }}

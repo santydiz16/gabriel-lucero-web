@@ -108,7 +108,7 @@ export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
             fontWeight: 500,
           }}
         >
-          Wedding Film · Argentina
+          Bodas · XV · Videoclips · Argentina
         </motion.div>
 
         {/* Headline */}
@@ -155,8 +155,8 @@ export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
             marginRight: "auto",
           }}
         >
-          Capturo cada mirada, cada risa y cada lágrima de alegría para
-          que revivan ese día para siempre.
+          Capturo cada mirada, cada risa y cada emoción — bodas, fiestas de XV
+          y videoclips que cuentan historias para siempre.
         </motion.p>
 
         {/* CTAs */}

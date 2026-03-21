@@ -4,56 +4,166 @@ import AnimateIn from "./AnimateIn";
 import { Check, Star } from "lucide-react";
 import { useState } from "react";
 
-const packages = [
-  {
-    name: "Esencial",
-    tagline: "Para parejas que quieren lo esencial",
-    price: "Consultar",
-    features: [
-      "1 cámara profesional",
-      "Hasta 6 horas de cobertura",
-      "Película principal (3–5 min)",
-      "Entrega en 60 días",
-      "Formato digital en alta resolución",
-    ],
-    highlighted: false,
-  },
-  {
-    name: "Premium",
-    tagline: "El más elegido por nuestras parejas",
-    price: "Consultar",
-    features: [
-      "2 cámaras profesionales",
-      "Hasta 10 horas de cobertura",
-      "Película principal (8–12 min)",
-      "Teaser para redes sociales (60 seg)",
-      "Entrega en 45 días",
-      "Formato digital en 4K",
-      "1 reunión de planificación",
-    ],
-    highlighted: true,
-  },
-  {
-    name: "Luxury",
-    tagline: "Una experiencia cinematográfica completa",
-    price: "Consultar",
-    features: [
-      "2 cámaras + drone aéreo",
-      "Día completo de cobertura",
-      "Película principal (15–20 min)",
-      "Teaser + Highlight reel",
-      "Entrega en 30 días",
-      "Formato digital en 4K",
-      "2 reuniones de planificación",
-      "Álbum digital de momentos",
-    ],
-    highlighted: false,
-  },
+type Package = {
+  name: string;
+  tagline: string;
+  price: string;
+  features: string[];
+  highlighted: boolean;
+};
+
+const packagesByType: Record<string, Package[]> = {
+  bodas: [
+    {
+      name: "Esencial",
+      tagline: "Para parejas que quieren lo esencial",
+      price: "Consultar",
+      features: [
+        "1 cámara profesional",
+        "Hasta 6 horas de cobertura",
+        "Película principal (3–5 min)",
+        "Entrega en 60 días",
+        "Formato digital en alta resolución",
+      ],
+      highlighted: false,
+    },
+    {
+      name: "Premium",
+      tagline: "El más elegido por nuestras parejas",
+      price: "Consultar",
+      features: [
+        "2 cámaras profesionales",
+        "Hasta 10 horas de cobertura",
+        "Película principal (8–12 min)",
+        "Teaser para redes sociales (60 seg)",
+        "Entrega en 45 días",
+        "Formato digital en 4K",
+        "1 reunión de planificación",
+      ],
+      highlighted: true,
+    },
+    {
+      name: "Luxury",
+      tagline: "Una experiencia cinematográfica completa",
+      price: "Consultar",
+      features: [
+        "2 cámaras + drone aéreo",
+        "Día completo de cobertura",
+        "Película principal (15–20 min)",
+        "Teaser + Highlight reel",
+        "Entrega en 30 días",
+        "Formato digital en 4K",
+        "2 reuniones de planificación",
+        "Álbum digital de momentos",
+      ],
+      highlighted: false,
+    },
+  ],
+  xv: [
+    {
+      name: "Esencial XV",
+      tagline: "Perfecta para celebraciones íntimas",
+      price: "Consultar",
+      features: [
+        "1 cámara profesional",
+        "Hasta 4 horas de cobertura",
+        "Película principal (3–4 min)",
+        "Entrega en 45 días",
+        "Formato digital en alta resolución",
+      ],
+      highlighted: false,
+    },
+    {
+      name: "Premium XV",
+      tagline: "La más elegida para fiestas de XV",
+      price: "Consultar",
+      features: [
+        "2 cámaras profesionales",
+        "Hasta 6 horas de cobertura",
+        "Película principal (6–8 min)",
+        "Teaser para redes (60 seg)",
+        "Entrega en 30 días",
+        "Formato digital en 4K",
+        "1 reunión de planificación",
+      ],
+      highlighted: true,
+    },
+    {
+      name: "Luxury XV",
+      tagline: "Una noche inolvidable hecha película",
+      price: "Consultar",
+      features: [
+        "2 cámaras + drone aéreo",
+        "Día completo de cobertura",
+        "Película principal (10–12 min)",
+        "Teaser + Highlight reel",
+        "Same-day edit para la fiesta",
+        "Entrega en 20 días",
+        "Formato digital en 4K",
+      ],
+      highlighted: false,
+    },
+  ],
+  videoclip: [
+    {
+      name: "Single",
+      tagline: "Para tu primer lanzamiento visual",
+      price: "Consultar",
+      features: [
+        "1 día de rodaje",
+        "1 locación interior o exterior",
+        "Edición y color grading",
+        "Entrega en 21 días",
+        "Formato HD para streaming",
+      ],
+      highlighted: false,
+    },
+    {
+      name: "Producción",
+      tagline: "El estándar para artistas en crecimiento",
+      price: "Consultar",
+      features: [
+        "2 días de rodaje",
+        "Hasta 3 locaciones",
+        "Color grading cinematográfico",
+        "Versión completa + corte para redes",
+        "Entrega en 14 días",
+        "Formato 4K para todas las plataformas",
+        "1 reunión de preproducción",
+      ],
+      highlighted: true,
+    },
+    {
+      name: "Producción Completa",
+      tagline: "Dirección artística de principio a fin",
+      price: "Consultar",
+      features: [
+        "Múltiples días de rodaje",
+        "Scouting y producción de locaciones",
+        "Dirección artística completa",
+        "Color grading + efectos especiales",
+        "Versión completa + cuts para redes",
+        "Entrega en 10 días",
+        "Formato 4K · Dolby Vision disponible",
+        "Sesiones de feedback ilimitadas",
+      ],
+      highlighted: false,
+    },
+  ],
+};
+
+const serviceTypes = [
+  { id: "bodas", label: "Bodas", icon: "💍" },
+  { id: "xv", label: "Fiestas de XV", icon: "🌹" },
+  { id: "videoclip", label: "Videoclips", icon: "🎬" },
 ];
 
 export default function Services({ variant }: { variant: "dark" | "minimal" }) {
   const isDark = variant === "dark";
+  const [activeType, setActiveType] = useState("bodas");
   const [hovered, setHovered] = useState<number | null>(null);
+
+  const packages = packagesByType[activeType];
 
   return (
     <section
@@ -66,7 +176,7 @@ export default function Services({ variant }: { variant: "dark" | "minimal" }) {
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
         {/* Header */}
         <AnimateIn>
-          <div style={{ marginBottom: "5rem", maxWidth: "560px" }}>
+          <div style={{ marginBottom: "3rem", maxWidth: "560px" }}>
             <p
               style={{
                 fontSize: "0.7rem",
@@ -106,6 +216,38 @@ export default function Services({ variant }: { variant: "dark" | "minimal" }) {
           </div>
         </AnimateIn>
 
+        {/* Service type tabs */}
+        <AnimateIn delay={0.05}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "3rem" }}>
+            {serviceTypes.map((type) => {
+              const isActive = activeType === type.id;
+              return (
+                <button
+                  key={type.id}
+                  onClick={() => { setActiveType(type.id); setHovered(null); }}
+                  style={{
+                    padding: "10px 22px",
+                    border: isActive ? "1px solid var(--gold)" : "1px solid var(--border-subtle)",
+                    background: isActive ? "var(--gold-dim)" : "transparent",
+                    color: isActive ? "var(--gold)" : "var(--text-2)",
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    fontWeight: isActive ? 600 : 400,
+                  }}
+                >
+                  <span>{type.icon}</span> {type.label}
+                </button>
+              );
+            })}
+          </div>
+        </AnimateIn>
+
         {/* Cards */}
         <div
           style={{
@@ -116,20 +258,15 @@ export default function Services({ variant }: { variant: "dark" | "minimal" }) {
           }}
         >
           {packages.map((pkg, index) => (
-            <AnimateIn key={pkg.name} delay={index * 0.1}>
+            <AnimateIn key={`${activeType}-${pkg.name}`} delay={index * 0.1}>
               <div
                 onMouseEnter={() => setHovered(index)}
                 onMouseLeave={() => setHovered(null)}
                 style={{
                   position: "relative",
                   padding: "40px 36px",
-                  background: pkg.highlighted
-                    ? isDark
-                      ? "var(--bg-3)"
-                      : "var(--text)"
-                    : isDark
-                    ? "var(--bg-3)"
-                    : "var(--bg-3)",
+                  background:
+                    isDark ? "var(--bg-3)" : "var(--bg-3)",
                   border: pkg.highlighted
                     ? `1px solid var(--gold)`
                     : `1px solid var(--border-subtle)`,
@@ -172,8 +309,7 @@ export default function Services({ variant }: { variant: "dark" | "minimal" }) {
                     style={{
                       fontSize: "1.5rem",
                       fontWeight: isDark ? 400 : 300,
-                      color:
-                        pkg.highlighted && !isDark ? "#fff" : "var(--text)",
+                      color: "var(--text)",
                       margin: "0 0 8px",
                       fontStyle: isDark ? "italic" : "normal",
                       letterSpacing: isDark ? "0" : "-0.02em",
@@ -184,10 +320,7 @@ export default function Services({ variant }: { variant: "dark" | "minimal" }) {
                   <p
                     style={{
                       fontSize: "0.8rem",
-                      color:
-                        pkg.highlighted && !isDark
-                          ? "rgba(255,255,255,0.6)"
-                          : "var(--text-2)",
+                      color: "var(--text-2)",
                       margin: "0 0 2rem",
                     }}
                   >
@@ -215,10 +348,7 @@ export default function Services({ variant }: { variant: "dark" | "minimal" }) {
                           gap: "10px",
                           marginBottom: "12px",
                           fontSize: "0.85rem",
-                          color:
-                            pkg.highlighted && !isDark
-                              ? "rgba(255,255,255,0.85)"
-                              : "var(--text-2)",
+                          color: "var(--text-2)",
                         }}
                       >
                         <Check
@@ -246,13 +376,11 @@ export default function Services({ variant }: { variant: "dark" | "minimal" }) {
                       textAlign: "center",
                       padding: "14px",
                       background: pkg.highlighted ? "var(--gold)" : "transparent",
-                      border: `1px solid ${pkg.highlighted ? "var(--gold)" : pkg.highlighted && !isDark ? "rgba(255,255,255,0.3)" : "var(--border)"}`,
+                      border: `1px solid ${pkg.highlighted ? "var(--gold)" : "var(--border)"}`,
                       color: pkg.highlighted
                         ? isDark
                           ? "#080808"
                           : "#fff"
-                        : pkg.highlighted && !isDark
-                        ? "#fff"
                         : "var(--text)",
                       fontSize: "0.72rem",
                       letterSpacing: "0.15em",

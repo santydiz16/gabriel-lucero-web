@@ -6,7 +6,7 @@ import AnimateIn from "./AnimateIn";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
-const categories = ["Todo", "Bodas", "Preboda", "Destino"];
+const categories = ["Todo", "Bodas", "XV", "Videoclips", "Destino"];
 
 const items = [
   {
@@ -20,7 +20,7 @@ const items = [
   {
     id: 2,
     title: "Valentina & Sebastián",
-    category: "Preboda",
+    category: "Bodas",
     location: "Buenos Aires",
     size: "small",
     photo: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80&fit=crop&crop=center",
@@ -43,9 +43,9 @@ const items = [
   },
   {
     id: 5,
-    title: "Florencia & Diego",
-    category: "Preboda",
-    location: "Tigre, Buenos Aires",
+    title: "Valentina — XV años",
+    category: "XV",
+    location: "Buenos Aires, Argentina",
     size: "medium",
     photo: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1000&q=80&fit=crop&crop=center",
   },
@@ -56,6 +56,30 @@ const items = [
     location: "Toscana, Italia",
     size: "large",
     photo: "https://images.unsplash.com/photo-1525772764200-be829a350797?w=1200&q=80&fit=crop&crop=center",
+  },
+  {
+    id: 7,
+    title: "Isabela — XV años",
+    category: "XV",
+    location: "Córdoba, Argentina",
+    size: "small",
+    photo: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&q=80&fit=crop&crop=center",
+  },
+  {
+    id: 8,
+    title: "Matías Vega — Videoclip",
+    category: "Videoclips",
+    location: "Estudio, Buenos Aires",
+    size: "large",
+    photo: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&q=80&fit=crop&crop=center",
+  },
+  {
+    id: 9,
+    title: "La Rueda — Videoclip",
+    category: "Videoclips",
+    location: "Locación exterior, CABA",
+    size: "small",
+    photo: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80&fit=crop&crop=center",
   },
 ];
 

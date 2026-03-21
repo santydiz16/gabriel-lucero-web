@@ -18,12 +18,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Gabriel Lucero · Wedding Film",
-  description: "Videografía de bodas cinematográfica. Capturamos tu historia para que la revivas para siempre.",
-  keywords: ["videografía bodas", "wedding film", "Gabriel Lucero", "videógrafo bodas Argentina"],
+  title: "Gabriel Lucero · Film & Producción",
+  description: "Videografía cinematográfica de bodas, fiestas de XV y videoclips. Capturamos tu historia para que la revivas para siempre.",
+  keywords: ["videografía bodas", "wedding film", "Gabriel Lucero", "videógrafo bodas Argentina", "fiestas de XV", "videoclip profesional", "videógrafo XV", "producción audiovisual Argentina"],
   openGraph: {
-    title: "Gabriel Lucero · Wedding Film",
-    description: "Videografía de bodas cinematográfica.",
+    title: "Gabriel Lucero · Film & Producción",
+    description: "Videografía cinematográfica de bodas, fiestas de XV y videoclips en Argentina.",
     type: "website",
   },
 };

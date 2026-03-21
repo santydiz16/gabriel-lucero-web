@@ -28,31 +28,31 @@ type Service = {
 
 const SERVICES: Service[] = [
   // Cobertura
-  { id: "cob-6h",      category: "cobertura", name: "Cobertura 6 horas",        description: "Ideal para bodas compactas o ceremonias civiles",               price: 800,  unit: "evento" },
-  { id: "cob-10h",     category: "cobertura", name: "Cobertura 10 horas",        description: "La más popular — cubre ceremonia y recepción completa",          price: 1200, unit: "evento", popular: true },
+  { id: "cob-6h",      category: "cobertura", name: "Cobertura 6 horas",        description: "Ideal para bodas compactas, XV o ceremonias civiles",             price: 800,  unit: "evento" },
+  { id: "cob-10h",     category: "cobertura", name: "Cobertura 10 horas",        description: "La más popular — cubre ceremonia y recepción completa",           price: 1200, unit: "evento", popular: true },
   { id: "cob-full",    category: "cobertura", name: "Día completo",               description: "Desde los preparativos hasta el último baile sin límite horario", price: 1800, unit: "evento" },
-  { id: "cob-preboda", category: "cobertura", name: "Sesión de pre-boda",         description: "Sesión cinematográfica romántica antes del gran día",            price: 400,  unit: "sesión" },
+  { id: "cob-presession", category: "cobertura", name: "Sesión previa al evento", description: "Sesión cinematográfica íntima antes del gran día",               price: 400,  unit: "sesión" },
 
   // Cámaras & Equipo
-  { id: "cam-segunda", category: "camara", name: "Segunda cámara profesional",  description: "Capturá cada momento desde dos ángulos simultáneos",            price: 300, unit: "evento", popular: true },
-  { id: "cam-drone",   category: "camara", name: "Dron cinematográfico",         description: "Tomas aéreas épicas que elevan la producción",                  price: 350, unit: "evento" },
-  { id: "cam-slowmo",  category: "camara", name: "Cámara slow motion",           description: "Momentos congelados a 120 fps — emociones en detalle",          price: 200, unit: "evento" },
-  { id: "cam-gopro",   category: "camara", name: "Cámara de acción",             description: "Perspectivas únicas e íntimas desde ángulos imposibles",        price: 100, unit: "evento" },
+  { id: "cam-segunda", category: "camara", name: "Segunda cámara profesional",  description: "Capturá cada momento desde dos ángulos simultáneos",             price: 300, unit: "evento", popular: true },
+  { id: "cam-drone",   category: "camara", name: "Dron cinematográfico",         description: "Tomas aéreas épicas que elevan cualquier producción",            price: 350, unit: "evento" },
+  { id: "cam-slowmo",  category: "camara", name: "Cámara slow motion",           description: "Momentos congelados a 120 fps — emociones en detalle",           price: 200, unit: "evento" },
+  { id: "cam-gopro",   category: "camara", name: "Cámara de acción",             description: "Perspectivas únicas e íntimas desde ángulos imposibles",         price: 100, unit: "evento" },
 
   // Entregables
   { id: "vid-teaser",    category: "video", name: "Teaser para redes (60 seg)",      description: "Perfecto para compartir en Instagram y TikTok al instante",    price: 150, unit: "video", popular: true },
-  { id: "vid-highlight", category: "video", name: "Highlight reel (3 min)",          description: "Los mejores momentos de tu boda en un corte dinámico",         price: 200, unit: "video" },
+  { id: "vid-highlight", category: "video", name: "Highlight reel (3 min)",          description: "Los mejores momentos del evento en un corte dinámico",         price: 200, unit: "video" },
   { id: "vid-sde",       category: "video", name: "Same-day edit",                   description: "Un corte especial revelado en vivo durante la misma fiesta",   price: 400, unit: "evento" },
   { id: "vid-extendida", category: "video", name: "Película extendida (15–20 min)",  description: "Cada detalle y momento preservado en toda su profundidad",     price: 300, unit: "video" },
-  { id: "vid-pelicula",  category: "video", name: "Película principal (8–12 min)",   description: "Tu historia narrada de principio a fin — siempre incluida",   price: 0,   unit: "incluido", included: true },
+  { id: "vid-pelicula",  category: "video", name: "Película principal (8–12 min)",   description: "Tu historia narrada de principio a fin — siempre incluida",    price: 0,   unit: "incluido", included: true },
 
   // Extras
-  { id: "ext-novia",      category: "extras", name: "Preparativos de la novia",       description: "Makeup, vestido y los momentos más íntimos antes del sí",      price: 200, unit: "servicio" },
-  { id: "ext-novio",      category: "extras", name: "Preparativos del novio",          description: "La anticipación y nervios del novio antes de la ceremonia",    price: 150, unit: "servicio" },
-  { id: "ext-civil",      category: "extras", name: "Ceremonia civil adicional",       description: "¿Tienen registro civil y religioso? Cubrimos ambos",          price: 300, unit: "evento" },
-  { id: "ext-usb",        category: "extras", name: "USB premium artesanal",           description: "Tu boda en un pendrive grabado con los nombres de la pareja",  price: 80,  unit: "unidad" },
-  { id: "ext-express",    category: "extras", name: "Entrega express (15 días)",       description: "¿No podés esperar 60 días? Recibís tu película en tiempo récord", price: 250, unit: "servicio" },
-  { id: "ext-subtitulos", category: "extras", name: "Subtítulos y captions",           description: "Para parejas internacionales o que quieren accesibilidad total", price: 100, unit: "servicio" },
+  { id: "ext-preparativos", category: "extras", name: "Preparativos del festejado/a", description: "Los momentos más íntimos de producción antes del evento",     price: 200, unit: "servicio" },
+  { id: "ext-civil",         category: "extras", name: "Ceremonia adicional",          description: "¿Tiene iglesia y civil? ¿Pre-show y show? Cubrimos todo",     price: 300, unit: "evento" },
+  { id: "ext-usb",           category: "extras", name: "USB premium artesanal",        description: "Tu evento en un pendrive con el nombre personalizado grabado", price: 80,  unit: "unidad" },
+  { id: "ext-express",       category: "extras", name: "Entrega express (15 días)",    description: "¿No podés esperar? Recibís tu película en tiempo récord",      price: 250, unit: "servicio" },
+  { id: "ext-subtitulos",    category: "extras", name: "Subtítulos y captions",        description: "Para audiencias internacionales o accesibilidad total",        price: 100, unit: "servicio" },
+  { id: "ext-videoclip",     category: "extras", name: "Videoclip artístico add-on",   description: "Producción de videoclip profesional para artistas del evento", price: 500, unit: "servicio" },
 ];
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
@@ -150,8 +150,8 @@ export default function Cart({ variant }: { variant: "dark" | "minimal" }) {
               {isDark ? <><em>Tu producción,</em><br />a tu medida</> : <>Tu producción,<br />a tu medida</>}
             </h2>
             <p style={{ fontSize: "0.95rem", color: subtleText, lineHeight: 1.7, margin: 0 }}>
-              Seleccioná los servicios que más se ajustan a tu boda. Cuando termines,
-              te enviamos la cotización directo a WhatsApp.
+              Seleccioná los servicios que más se ajustan a tu evento — boda, XV o videoclip.
+              Cuando termines, te enviamos la cotización directo a WhatsApp.
             </p>
           </div>
         </AnimateIn>

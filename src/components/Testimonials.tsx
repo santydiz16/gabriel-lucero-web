@@ -8,25 +8,31 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 const testimonials = [
   {
     couple: "Camila & Martín",
-    date: "Marzo 2024 · Mendoza",
+    date: "Boda · Marzo 2024 · Mendoza",
     text: "Gabriel tiene una sensibilidad única para capturar lo que importa. Cuando vimos nuestra película por primera vez, lloramos como si estuviéramos viviendo ese día de nuevo. Cada mirada, cada abrazo... todo está ahí. Es un artista.",
     rating: 5,
   },
   {
     couple: "Valentina & Sebastián",
-    date: "Noviembre 2023 · Buenos Aires",
+    date: "Boda · Noviembre 2023 · Buenos Aires",
     text: "Lo mejor que hicimos fue elegir a Gabriel. No lo sentimos como un extraño ese día — era parte de la celebración. La película superó todo lo que imaginamos. Nuestras familias la ven una y otra vez.",
     rating: 5,
   },
   {
-    couple: "Lucía & Agustín",
-    date: "Septiembre 2023 · Cartagena",
-    text: "Nos casamos en el exterior y Gabriel viajó con nosotros. Su profesionalismo y calidez hicieron todo más fácil. El resultado es una obra de arte que atesoraremos de por vida. Gracias, Gabriel.",
+    couple: "Isabela Torres",
+    date: "XV años · Agosto 2024 · Córdoba",
+    text: "Para los XV de mi hija quería algo diferente, algo que ella pudiera ver de grande y emocionarse. Gabriel entendió eso desde el primer minuto. El resultado fue una película preciosa que la hizo llorar de emoción. Todos nuestros familiares ya le pidieron su contacto.",
+    rating: 5,
+  },
+  {
+    couple: "Matías Vega",
+    date: "Videoclip · Enero 2024 · Buenos Aires",
+    text: "Trabajar con Gabriel fue una experiencia increíble. Entiende la música, entiende la estética, y sabe cómo traducir una canción en imágenes. Mi videoclip quedó a un nivel cinematográfico que no esperaba. Definitivamente lo llamo para el próximo.",
     rating: 5,
   },
   {
     couple: "Florencia & Diego",
-    date: "Mayo 2024 · Córdoba",
+    date: "Boda · Mayo 2024 · Córdoba",
     text: "Desde la primera reunión supimos que estábamos en las manos correctas. Gabriel entendió exactamente el estilo que queríamos y lo llevó a otro nivel. Cada vez que lo mostramos a alguien, nos piden su contacto.",
     rating: 5,
   },
@@ -103,13 +109,13 @@ export default function Testimonials({ variant }: { variant: "dark" | "minimal" 
                 <>
                   Lo que dicen
                   <br />
-                  <em>nuestras parejas</em>
+                  <em>nuestros clientes</em>
                 </>
               ) : (
                 <>
                   Lo que dicen
                   <br />
-                  nuestras parejas
+                  nuestros clientes
                 </>
               )}
             </h2>

@@ -12,9 +12,9 @@ import Image from "next/image";
 
 const stats = [
   { value: "6+", label: "Años de experiencia" },
-  { value: "200+", label: "Bodas filmadas" },
+  { value: "200+", label: "Producciones filmadas" },
   { value: "8", label: "Países" },
-  { value: "100%", label: "Parejas satisfechas" },
+  { value: "100%", label: "Clientes satisfechos" },
 ];
 
 export default function About({ variant }: { variant: "dark" | "minimal" }) {
@@ -155,9 +155,10 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
                   margin: "0 0 1.2rem",
                 }}
               >
-                Soy videógrafo especializado en bodas, apasionado por capturar
-                la autenticidad de cada momento. Creo que cada pareja tiene una
-                historia única que merece ser contada con belleza y emoción.
+                Soy videógrafo especializado en bodas, fiestas de XV y
+                videoclips artísticos. Apasionado por capturar la autenticidad
+                de cada momento, creo que cada historia merece ser contada con
+                belleza, emoción y un estilo cinematográfico único.
               </p>
               <p
                 style={{
@@ -167,11 +168,10 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
                   margin: "0 0 2.5rem",
                 }}
               >
-                Con más de 6 años de experiencia y habiendo filmado bodas en
-                Argentina, Colombia, Italia y más, mi enfoque siempre es el
-                mismo: ser invisible el día de la boda para que puedan ser
-                completamente libres, y crear una película que les quite el
-                aliento.
+                Con más de 6 años de experiencia filmando en Argentina, Colombia,
+                Italia y más, mi enfoque es siempre el mismo: ser invisible
+                durante el evento para que seas completamente libre, y crear
+                una película que te quite el aliento cada vez que la reveas.
               </p>
             </AnimateIn>
 
