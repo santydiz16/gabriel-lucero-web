@@ -1,429 +1,392 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import AnimateIn from "./AnimateIn";
-import { Check, Star } from "lucide-react";
-import { useState } from "react";
+import { Plus, Minus } from "lucide-react";
 
-type Package = {
-  name: string;
-  tagline: string;
-  price: string;
-  features: string[];
-  highlighted: boolean;
-};
-
-const packagesByType: Record<string, Package[]> = {
-  bodas: [
-    {
-      name: "Esencial",
-      tagline: "Para parejas que quieren lo esencial",
-      price: "Consultar",
-      features: [
-        "1 cámara profesional",
-        "Hasta 6 horas de cobertura",
-        "Película principal (3–5 min)",
-        "Entrega en 60 días",
-        "Formato digital en alta resolución",
-      ],
-      highlighted: false,
-    },
-    {
-      name: "Premium",
-      tagline: "El más elegido por nuestras parejas",
-      price: "Consultar",
-      features: [
-        "2 cámaras profesionales",
-        "Hasta 10 horas de cobertura",
-        "Película principal (8–12 min)",
-        "Teaser para redes sociales (60 seg)",
-        "Entrega en 45 días",
-        "Formato digital en 4K",
-        "1 reunión de planificación",
-      ],
-      highlighted: true,
-    },
-    {
-      name: "Luxury",
-      tagline: "Una experiencia cinematográfica completa",
-      price: "Consultar",
-      features: [
-        "2 cámaras + drone aéreo",
-        "Día completo de cobertura",
-        "Película principal (15–20 min)",
-        "Teaser + Highlight reel",
-        "Entrega en 30 días",
-        "Formato digital en 4K",
-        "2 reuniones de planificación",
-        "Álbum digital de momentos",
-      ],
-      highlighted: false,
-    },
-  ],
-  xv: [
-    {
-      name: "Esencial XV",
-      tagline: "Perfecta para celebraciones íntimas",
-      price: "Consultar",
-      features: [
-        "1 cámara profesional",
-        "Hasta 4 horas de cobertura",
-        "Película principal (3–4 min)",
-        "Entrega en 45 días",
-        "Formato digital en alta resolución",
-      ],
-      highlighted: false,
-    },
-    {
-      name: "Premium XV",
-      tagline: "La más elegida para fiestas de XV",
-      price: "Consultar",
-      features: [
-        "2 cámaras profesionales",
-        "Hasta 6 horas de cobertura",
-        "Película principal (6–8 min)",
-        "Teaser para redes (60 seg)",
-        "Entrega en 30 días",
-        "Formato digital en 4K",
-        "1 reunión de planificación",
-      ],
-      highlighted: true,
-    },
-    {
-      name: "Luxury XV",
-      tagline: "Una noche inolvidable hecha película",
-      price: "Consultar",
-      features: [
-        "2 cámaras + drone aéreo",
-        "Día completo de cobertura",
-        "Película principal (10–12 min)",
-        "Teaser + Highlight reel",
-        "Same-day edit para la fiesta",
-        "Entrega en 20 días",
-        "Formato digital en 4K",
-      ],
-      highlighted: false,
-    },
-  ],
-  videoclip: [
-    {
-      name: "Single",
-      tagline: "Para tu primer lanzamiento visual",
-      price: "Consultar",
-      features: [
-        "1 día de rodaje",
-        "1 locación interior o exterior",
-        "Edición y color grading",
-        "Entrega en 21 días",
-        "Formato HD para streaming",
-      ],
-      highlighted: false,
-    },
-    {
-      name: "Producción",
-      tagline: "El estándar para artistas en crecimiento",
-      price: "Consultar",
-      features: [
-        "2 días de rodaje",
-        "Hasta 3 locaciones",
-        "Color grading cinematográfico",
-        "Versión completa + corte para redes",
-        "Entrega en 14 días",
-        "Formato 4K para todas las plataformas",
-        "1 reunión de preproducción",
-      ],
-      highlighted: true,
-    },
-    {
-      name: "Producción Completa",
-      tagline: "Dirección artística de principio a fin",
-      price: "Consultar",
-      features: [
-        "Múltiples días de rodaje",
-        "Scouting y producción de locaciones",
-        "Dirección artística completa",
-        "Color grading + efectos especiales",
-        "Versión completa + cuts para redes",
-        "Entrega en 10 días",
-        "Formato 4K · Dolby Vision disponible",
-        "Sesiones de feedback ilimitadas",
-      ],
-      highlighted: false,
-    },
-  ],
-};
-
-const serviceTypes = [
-  { id: "bodas", label: "Bodas", icon: "💍" },
-  { id: "xv", label: "Fiestas de XV", icon: "🌹" },
-  { id: "videoclip", label: "Videoclips", icon: "🎬" },
+const areas = [
+  {
+    num: "01",
+    title: "Derecho Civil",
+    short: "Contratos, daños y sucesiones",
+    description:
+      "Asesoramiento y representación en conflictos civiles: contratos, daños y perjuicios, responsabilidad civil, sucesiones y herencias. Trabajamos para proteger tu patrimonio y derechos.",
+    items: [
+      "Redacción y revisión de contratos",
+      "Daños y perjuicios",
+      "Sucesiones y herencias",
+      "Responsabilidad civil extracontractual",
+      "Cobro ejecutivo de deudas",
+    ],
+  },
+  {
+    num: "02",
+    title: "Derecho Laboral",
+    short: "Despidos, ART y reclamos salariales",
+    description:
+      "Defensa de trabajadores y asesoría a empleadores. Actuamos ante Juzgados del Trabajo y en instancias administrativas con profundo conocimiento del mercado laboral argentino.",
+    items: [
+      "Despidos y liquidaciones",
+      "Accidentes de trabajo (ART)",
+      "Reclamos salariales",
+      "Multas laborales",
+      "Asesoría a empresas",
+    ],
+  },
+  {
+    num: "03",
+    title: "Derecho Penal",
+    short: "Defensa técnica en causas penales",
+    description:
+      "Defensa técnica en todas las instancias del proceso penal. Actuamos con rapidez, estrategia probada y compromiso absoluto con los derechos del imputado o querellante.",
+    items: [
+      "Defensa en causas penales",
+      "Excarcelaciones y exenciones",
+      "Recursos y apelaciones",
+      "Querellas y denuncias penales",
+      "Delitos económicos",
+    ],
+  },
+  {
+    num: "04",
+    title: "Derecho Comercial",
+    short: "Sociedades, contratos y quiebras",
+    description:
+      "Acompañamiento legal integral a empresas y emprendedores: constitución de sociedades, contratos comerciales, concursos preventivos y quiebras.",
+    items: [
+      "Constitución de sociedades",
+      "Contratos comerciales",
+      "Concursos y quiebras",
+      "Derecho societario",
+      "Resolución de conflictos entre socios",
+    ],
+  },
+  {
+    num: "05",
+    title: "Derecho de Familia",
+    short: "Divorcios, alimentos y tenencia",
+    description:
+      "Acompañamiento en los momentos más sensibles. Actuamos con tacto, firmeza y eficacia en divorcios, alimentos, tenencia de hijos y todas las cuestiones familiares.",
+    items: [
+      "Divorcios y separaciones",
+      "Alimentos y cuota alimentaria",
+      "Tenencia y régimen de visitas",
+      "Adopción y tutela",
+      "Violencia familiar",
+    ],
+  },
+  {
+    num: "06",
+    title: "Derecho Inmobiliario",
+    short: "Compraventas, alquileres y desalojos",
+    description:
+      "Toda operación vinculada a bienes inmuebles: compraventas, alquileres, desalojos, propiedad horizontal y conflictos entre consorcio y propietarios.",
+    items: [
+      "Compraventas y escrituras",
+      "Contratos de locación",
+      "Desalojos",
+      "Propiedad horizontal",
+      "Usucapión",
+    ],
+  },
 ];
 
-export default function Services({ variant }: { variant: "dark" | "minimal" }) {
-  const isDark = variant === "dark";
-  const [activeType, setActiveType] = useState("bodas");
-  const [hovered, setHovered] = useState<number | null>(null);
+export default function Services({ variant: _variant }: { variant: "dark" | "minimal" }) {
+  const [open, setOpen] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const packages = packagesByType[activeType];
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const toggle = (i: number) => setOpen((prev) => (prev === i ? null : i));
 
   return (
     <section
-      id="servicios"
+      id="areas"
       style={{
-        padding: "120px 0",
-        background: isDark ? "var(--bg-2)" : "var(--bg)",
+        padding: isMobile ? "80px 0" : "120px 0",
+        background: "var(--bg-2)",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
-        {/* Header */}
-        <AnimateIn>
-          <div style={{ marginBottom: "3rem", maxWidth: "560px" }}>
-            <p
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: isMobile ? "0 20px" : "0 clamp(32px, 5vw, 72px)",
+        }}
+      >
+        {/* Header row */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems: isMobile ? "flex-start" : "flex-end",
+            justifyContent: "space-between",
+            gap: "2rem",
+            marginBottom: isMobile ? "2.5rem" : "4rem",
+          }}
+        >
+          <AnimateIn>
+            <div
               style={{
-                fontSize: "0.7rem",
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                color: "var(--gold)",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
                 marginBottom: "1rem",
               }}
             >
-              Servicios
-            </p>
-            <h2
-              className="heading-serif"
-              style={{
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                fontWeight: isDark ? 400 : 300,
-                color: "var(--text)",
-                margin: 0,
-                lineHeight: 1.1,
-                letterSpacing: isDark ? "-0.01em" : "-0.03em",
-              }}
-            >
-              {isDark ? (
-                <>
-                  Elegí el paquete
-                  <br />
-                  <em>perfecto para vos</em>
-                </>
-              ) : (
-                <>
-                  Elegí el paquete
-                  <br />
-                  perfecto para vos
-                </>
-              )}
-            </h2>
-          </div>
-        </AnimateIn>
-
-        {/* Service type tabs */}
-        <AnimateIn delay={0.05}>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "3rem" }}>
-            {serviceTypes.map((type) => {
-              const isActive = activeType === type.id;
-              return (
-                <button
-                  key={type.id}
-                  onClick={() => { setActiveType(type.id); setHovered(null); }}
-                  style={{
-                    padding: "10px 22px",
-                    border: isActive ? "1px solid var(--gold)" : "1px solid var(--border-subtle)",
-                    background: isActive ? "var(--gold-dim)" : "transparent",
-                    color: isActive ? "var(--gold)" : "var(--text-2)",
-                    fontSize: "0.78rem",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    cursor: "pointer",
-                    transition: "all 0.2s",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    fontWeight: isActive ? 600 : 400,
-                  }}
-                >
-                  <span>{type.icon}</span> {type.label}
-                </button>
-              );
-            })}
-          </div>
-        </AnimateIn>
-
-        {/* Cards */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "24px",
-            alignItems: "start",
-          }}
-        >
-          {packages.map((pkg, index) => (
-            <AnimateIn key={`${activeType}-${pkg.name}`} delay={index * 0.1}>
-              <div
-                onMouseEnter={() => setHovered(index)}
-                onMouseLeave={() => setHovered(null)}
+              <div style={{ width: "24px", height: "2px", background: "var(--gold)" }} />
+              <span
                 style={{
-                  position: "relative",
-                  padding: "40px 36px",
-                  background:
-                    isDark ? "var(--bg-3)" : "var(--bg-3)",
-                  border: pkg.highlighted
-                    ? `1px solid var(--gold)`
-                    : `1px solid var(--border-subtle)`,
-                  transition: "transform 0.3s, box-shadow 0.3s",
-                  transform: hovered === index ? "translateY(-4px)" : "none",
-                  boxShadow:
-                    hovered === index
-                      ? isDark
-                        ? "0 20px 60px rgba(0,0,0,0.5)"
-                        : "0 20px 60px rgba(0,0,0,0.08)"
-                      : "none",
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase",
+                  color: "var(--gold)",
+                  fontWeight: 600,
                 }}
               >
-                {/* Popular badge */}
-                {pkg.highlighted && (
+                Áreas de práctica
+              </span>
+            </div>
+            <h2
+              className="heading-display"
+              style={{
+                fontSize: "clamp(2.2rem, 5vw, 4rem)",
+                color: "var(--text)",
+                margin: 0,
+              }}
+            >
+              ¿EN QUÉ
+              <br />
+              TE AYUDAMOS?
+            </h2>
+          </AnimateIn>
+
+          <AnimateIn delay={0.1}>
+            <p
+              style={{
+                fontSize: "0.88rem",
+                color: "var(--text-2)",
+                lineHeight: 1.75,
+                maxWidth: "300px",
+                margin: 0,
+              }}
+            >
+              Cobertura integral en las principales ramas del derecho argentino.
+              Consultanos sin importar el área.
+            </p>
+          </AnimateIn>
+        </div>
+
+        {/* Accordion list */}
+        <div>
+          {areas.map((area, i) => (
+            <AnimateIn key={area.num} delay={i * 0.04}>
+              <div
+                style={{
+                  borderTop: "1px solid var(--border-subtle)",
+                  ...(i === areas.length - 1 && {
+                    borderBottom: "1px solid var(--border-subtle)",
+                  }),
+                }}
+              >
+                {/* Row trigger */}
+                <button
+                  onClick={() => toggle(i)}
+                  style={{
+                    width: "100%",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: isMobile ? "22px 0" : "28px 0",
+                    display: "grid",
+                    gridTemplateColumns: isMobile
+                      ? "48px 1fr 32px"
+                      : "80px 1fr auto 48px",
+                    alignItems: "center",
+                    gap: isMobile ? "12px" : "24px",
+                    fontFamily: "inherit",
+                    textAlign: "left",
+                    transition: "opacity 0.2s",
+                  }}
+                >
+                  {/* Number */}
                   <div
+                    className="heading-display"
                     style={{
-                      position: "absolute",
-                      top: "-1px",
-                      left: "36px",
-                      background: "var(--gold)",
-                      color: isDark ? "#080808" : "#fff",
-                      fontSize: "0.65rem",
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      padding: "4px 12px",
-                      fontWeight: 600,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
+                      fontSize: isMobile ? "1rem" : "1.2rem",
+                      color: open === i ? "var(--gold)" : "var(--text-3)",
+                      transition: "color 0.25s",
                     }}
                   >
-                    <Star size={10} fill="currentColor" /> El más elegido
+                    {area.num}
                   </div>
-                )}
 
-                <div style={{ marginTop: pkg.highlighted ? "16px" : "0" }}>
-                  <h3
-                    className={isDark ? "heading-serif" : ""}
-                    style={{
-                      fontSize: "1.5rem",
-                      fontWeight: isDark ? 400 : 300,
-                      color: "var(--text)",
-                      margin: "0 0 8px",
-                      fontStyle: isDark ? "italic" : "normal",
-                      letterSpacing: isDark ? "0" : "-0.02em",
-                    }}
-                  >
-                    {pkg.name}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "var(--text-2)",
-                      margin: "0 0 2rem",
-                    }}
-                  >
-                    {pkg.tagline}
-                  </p>
-
-                  {/* Divider */}
-                  <div
-                    style={{
-                      width: "2rem",
-                      height: "1px",
-                      background: pkg.highlighted ? "var(--gold)" : "var(--border)",
-                      marginBottom: "2rem",
-                    }}
-                  />
-
-                  {/* Features */}
-                  <ul style={{ listStyle: "none", padding: 0, margin: "0 0 2.5rem" }}>
-                    {pkg.features.map((f) => (
-                      <li
-                        key={f}
+                  {/* Title */}
+                  <div>
+                    <div
+                      style={{
+                        fontSize: isMobile ? "1.05rem" : "1.3rem",
+                        fontWeight: 700,
+                        color: open === i ? "var(--text)" : "var(--text-2)",
+                        letterSpacing: "-0.01em",
+                        transition: "color 0.25s",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      {area.title}
+                    </div>
+                    {!isMobile && (
+                      <div
                         style={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: "10px",
-                          marginBottom: "12px",
-                          fontSize: "0.85rem",
-                          color: "var(--text-2)",
+                          fontSize: "0.78rem",
+                          color: "var(--text-3)",
+                          letterSpacing: "0.03em",
                         }}
                       >
-                        <Check
-                          size={14}
-                          style={{
-                            color: "var(--gold)",
-                            flexShrink: 0,
-                            marginTop: "2px",
-                          }}
-                        />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
+                        {area.short}
+                      </div>
+                    )}
+                  </div>
 
-                  {/* CTA */}
-                  <a
-                    href="#contacto"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" });
-                    }}
+                  {/* Hover indicator — desktop only */}
+                  {!isMobile && (
+                    <div
+                      style={{
+                        fontSize: "0.65rem",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        color: "var(--text-3)",
+                        opacity: open === i ? 0 : 1,
+                        transition: "opacity 0.2s",
+                      }}
+                    >
+                      {open === i ? "" : "Ver más"}
+                    </div>
+                  )}
+
+                  {/* Plus/minus */}
+                  <div
                     style={{
-                      display: "block",
-                      textAlign: "center",
-                      padding: "14px",
-                      background: pkg.highlighted ? "var(--gold)" : "transparent",
-                      border: `1px solid ${pkg.highlighted ? "var(--gold)" : "var(--border)"}`,
-                      color: pkg.highlighted
-                        ? isDark
-                          ? "#080808"
-                          : "#fff"
-                        : "var(--text)",
-                      fontSize: "0.72rem",
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      textDecoration: "none",
-                      fontWeight: 600,
-                      transition: "all 0.2s",
+                      width: "32px",
+                      height: "32px",
+                      border: "1px solid var(--border-subtle)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: open === i ? "var(--gold)" : "var(--text-3)",
+                      transition: "all 0.25s",
+                      background: open === i ? "var(--gold-dim)" : "transparent",
+                      borderColor: open === i ? "var(--border)" : "var(--border-subtle)",
                     }}
                   >
-                    Consultar precio
-                  </a>
-                </div>
+                    {open === i ? <Minus size={14} /> : <Plus size={14} />}
+                  </div>
+                </button>
+
+                {/* Expanded content */}
+                <AnimatePresence initial={false}>
+                  {open === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <div
+                        style={{
+                          paddingBottom: "32px",
+                          paddingLeft: isMobile ? "60px" : "104px",
+                          display: "grid",
+                          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                          gap: isMobile ? "20px" : "48px",
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "var(--text-2)",
+                            lineHeight: 1.8,
+                            margin: 0,
+                          }}
+                        >
+                          {area.description}
+                        </p>
+                        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                          {area.items.map((item) => (
+                            <li
+                              key={item}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "12px",
+                                padding: "8px 0",
+                                fontSize: "0.82rem",
+                                color: "var(--text-2)",
+                                borderBottom: "1px solid var(--border-subtle)",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  width: "5px",
+                                  height: "5px",
+                                  background: "var(--gold)",
+                                  flexShrink: 0,
+                                  borderRadius: "50%",
+                                }}
+                              />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </AnimateIn>
           ))}
         </div>
 
-        {/* Note */}
+        {/* Bottom CTA */}
         <AnimateIn delay={0.3}>
-          <p
+          <div
             style={{
-              textAlign: "center",
               marginTop: "3rem",
-              fontSize: "0.8rem",
-              color: "var(--text-2)",
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              flexWrap: "wrap",
             }}
           >
-            ¿Tenés algo en mente diferente?{" "}
+            <span style={{ fontSize: "0.85rem", color: "var(--text-2)" }}>
+              ¿Tu caso no encaja en ninguna categoría?
+            </span>
             <button
-              onClick={() => document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() =>
+                document.querySelector("#contacto")?.scrollIntoView({ behavior: "smooth" })
+              }
               style={{
                 background: "none",
                 border: "none",
                 cursor: "pointer",
                 color: "var(--gold)",
-                fontSize: "0.8rem",
+                fontSize: "0.85rem",
+                fontWeight: 600,
                 textDecoration: "underline",
                 padding: 0,
+                fontFamily: "inherit",
               }}
             >
-              Hablemos y creamos un paquete a medida.
+              Consultanos de todas formas →
             </button>
-          </p>
+          </div>
         </AnimateIn>
       </div>
     </section>

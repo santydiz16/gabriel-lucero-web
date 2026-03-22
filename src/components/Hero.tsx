@@ -1,292 +1,340 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 
-export default function Hero({ variant }: { variant: "dark" | "minimal" }) {
-  const isDark = variant === "dark";
+const stats = [
+  { value: "+15", label: "Años" },
+  { value: "+800", label: "Casos" },
+  { value: "95%", label: "Éxito" },
+];
 
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
+export default function Hero({ variant: _variant }: { variant: "dark" | "minimal" }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const prefersReduced = useReducedMotion();
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const scrollTo = (href: string) =>
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
       style={{
         position: "relative",
-        height: "100vh",
-        minHeight: "600px",
+        minHeight: "100vh",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: isMobile ? "column" : "row",
         overflow: "hidden",
-        paddingBottom: "80px",
       }}
     >
-      {/* Background */}
-      {isDark ? (
-        <>
-          {/* Real wedding photo base layer */}
-          <Image
-            src="https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=1920&q=80&fit=crop&crop=center"
-            alt="Wedding ceremony"
-            fill
-            priority
-            style={{ objectFit: "cover", objectPosition: "center" }}
-          />
-          {/* Dark cinematic overlay */}
-          <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.68)" }} />
-          {/* Subtle gold vignette */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "radial-gradient(ellipse at center, rgba(201,168,92,0.06) 0%, transparent 70%)",
-            }}
-          />
-          {/* Film grain effect */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage:
-                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E\")",
-              opacity: 0.3,
-            }}
-          />
-          {/* Letterbox top/bottom */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "120px", background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)" }} />
-        </>
-      ) : (
-        <>
-          {/* Minimal: real light wedding photo */}
-          <Image
-            src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&q=80&fit=crop&crop=center"
-            alt="Wedding reception"
-            fill
-            priority
-            style={{ objectFit: "cover", objectPosition: "center top" }}
-          />
-          {/* Light overlay for readability */}
-          <div style={{ position: "absolute", inset: 0, background: "rgba(250,250,248,0.82)" }} />
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage:
-                "linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px)",
-              backgroundSize: "60px 60px",
-            }}
-          />
-        </>
-      )}
-
-      {/* Content */}
+      {/* ─── LEFT PANEL — text ─── */}
       <div
         style={{
+          flex: isMobile ? "none" : "0 0 58%",
+          background: "var(--bg)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: isMobile
+            ? "120px 24px 56px"
+            : "0 clamp(32px, 6vw, 80px) 0 clamp(24px, 5vw, 72px)",
           position: "relative",
-          zIndex: 2,
-          textAlign: "center",
-          padding: "0 24px",
-          maxWidth: "900px",
+          zIndex: 1,
         }}
       >
-        {/* Eyebrow */}
+        {/* Eyebrow row */}
         <motion.div
-          initial={{ opacity: 0, letterSpacing: "0.3em" }}
-          animate={{ opacity: 1, letterSpacing: isDark ? "0.25em" : "0.2em" }}
-          transition={{ duration: 1, delay: 0.2 }}
+          initial={{ opacity: 0, x: prefersReduced ? 0 : -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: prefersReduced ? 0.01 : 0.6, delay: prefersReduced ? 0 : 0.2 }}
           style={{
-            fontSize: "0.7rem",
-            letterSpacing: isDark ? "0.25em" : "0.2em",
-            textTransform: "uppercase",
-            color: "var(--gold)",
-            marginBottom: "2rem",
-            fontWeight: 500,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            marginBottom: "2.5rem",
           }}
         >
-          Bodas · XV · Videoclips · Argentina
+          <div style={{ width: "32px", height: "1px", background: "var(--gold)" }} />
+          <span
+            style={{
+              fontSize: "0.62rem",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              color: "var(--gold)",
+              fontWeight: 600,
+            }}
+          >
+            Estudio Jurídico G.N.
+          </span>
         </motion.div>
 
-        {/* Headline */}
-        <div style={{ overflow: "hidden" }}>
-          {["Tu historia", "merece ser", "eterna."].map((line, i) => (
+        {/* Main headline — bold display */}
+        <div style={{ overflow: "hidden", marginBottom: "2rem" }}>
+          {["DEFENDEMOS", "LO QUE MÁS", "TE IMPORTA."].map((word, i) => (
             <motion.div
-              key={line}
-              initial={{ y: "100%" }}
+              key={i}
+              initial={{ y: prefersReduced ? 0 : "110%" }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.9, delay: 0.4 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: prefersReduced ? 0.01 : 0.7,
+                delay: prefersReduced ? 0 : 0.35 + i * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               style={{ overflow: "hidden" }}
             >
               <h1
-                className="heading-serif"
+                className="heading-display"
                 style={{
-                  fontSize: "clamp(3rem, 8vw, 7rem)",
-                  fontWeight: isDark ? 400 : 300,
-                  lineHeight: 1.05,
-                  color: "var(--text)",
+                  fontSize: "clamp(2.6rem, 6.5vw, 5.5rem)",
+                  color: i === 2 ? "var(--gold)" : "var(--text)",
                   margin: 0,
-                  fontStyle: isDark && i === 2 ? "italic" : "normal",
-                  letterSpacing: isDark ? "-0.01em" : "-0.04em",
                 }}
               >
-                {line}
+                {word}
               </h1>
             </motion.div>
           ))}
         </div>
 
-        {/* Subtitle */}
+        {/* Subtext */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: prefersReduced ? 0 : 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.9 }}
+          transition={{ duration: prefersReduced ? 0.01 : 0.6, delay: prefersReduced ? 0 : 0.75 }}
           style={{
-            fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
+            fontSize: "clamp(0.88rem, 1.6vw, 1rem)",
             color: "var(--text-2)",
-            marginTop: "2rem",
-            marginBottom: "3rem",
-            lineHeight: 1.7,
-            maxWidth: "520px",
-            marginLeft: "auto",
-            marginRight: "auto",
+            lineHeight: 1.8,
+            maxWidth: "400px",
+            marginBottom: "2.5rem",
           }}
         >
-          Capturo cada mirada, cada risa y cada emoción — bodas, fiestas de XV
-          y videoclips que cuentan historias para siempre.
+          Más de una década representando personas y empresas ante la justicia
+          argentina con rigor, ética y resultados comprobados.
         </motion.p>
 
         {/* CTAs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: prefersReduced ? 0 : 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 1.05 }}
-          style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}
+          transition={{ duration: prefersReduced ? 0.01 : 0.6, delay: prefersReduced ? 0 : 0.9 }}
+          style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: isMobile ? "3rem" : "4rem" }}
         >
-          <button
-            onClick={() => scrollTo("#portfolio")}
-            style={{
-              background: "transparent",
-              border: `1px solid ${isDark ? "rgba(201,168,92,0.5)" : "rgba(0,0,0,0.3)"}`,
-              cursor: "pointer",
-              color: "var(--text)",
-              fontSize: "0.75rem",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              padding: "14px 36px",
-              fontWeight: 500,
-              transition: "all 0.25s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "var(--gold-dim)";
-              e.currentTarget.style.borderColor = "var(--gold)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.borderColor = isDark ? "rgba(201,168,92,0.5)" : "rgba(0,0,0,0.3)";
-            }}
-          >
-            Ver mi trabajo
-          </button>
           <button
             onClick={() => scrollTo("#contacto")}
             style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
               background: "var(--gold)",
-              border: "1px solid var(--gold)",
+              border: "none",
               cursor: "pointer",
-              color: isDark ? "#080808" : "#fff",
-              fontSize: "0.75rem",
-              letterSpacing: "0.15em",
+              color: "#fff",
+              fontSize: "0.72rem",
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
-              padding: "14px 36px",
-              fontWeight: 600,
-              transition: "background 0.25s",
+              padding: "15px 28px",
+              fontWeight: 700,
+              fontFamily: "inherit",
+              transition: "background 0.2s",
             }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "var(--gold-hover)")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "var(--gold)")}
           >
-            Reservar fecha
+            Consulta gratuita
+            <ArrowRight size={14} />
+          </button>
+
+          <button
+            onClick={() => scrollTo("#areas")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              background: "transparent",
+              border: "1px solid var(--border-strong)",
+              cursor: "pointer",
+              color: "var(--text-2)",
+              fontSize: "0.72rem",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              padding: "15px 28px",
+              fontWeight: 500,
+              fontFamily: "inherit",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--gold)";
+              e.currentTarget.style.color = "var(--gold)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border-strong)";
+              e.currentTarget.style.color = "var(--text-2)";
+            }}
+          >
+            Nuestras áreas
           </button>
         </motion.div>
+
+        {/* Stats bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: prefersReduced ? 0 : 1.1, duration: prefersReduced ? 0.01 : 0.6 }}
+          style={{
+            display: "flex",
+            gap: "0",
+            borderTop: "1px solid var(--border-subtle)",
+            paddingTop: "1.5rem",
+          }}
+        >
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              style={{
+                flex: 1,
+                paddingRight: i < stats.length - 1 ? "1.5rem" : 0,
+                borderRight: i < stats.length - 1 ? "1px solid var(--border-subtle)" : "none",
+                marginRight: i < stats.length - 1 ? "1.5rem" : 0,
+              }}
+            >
+              <div
+                className="heading-display"
+                style={{
+                  fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
+                  color: "var(--text)",
+                  marginBottom: "2px",
+                }}
+              >
+                {s.value}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "var(--text-3)",
+                }}
+              >
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Instagram handle — bottom left, desktop only */}
+        {!isMobile && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: prefersReduced ? 0 : 1.3 }}
+            style={{
+              position: "absolute",
+              bottom: "28px",
+              left: "clamp(24px, 5vw, 72px)",
+              fontSize: "0.58rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "var(--text-3)",
+            }}
+          >
+            @estudiojuridico.gn
+          </motion.div>
+        )}
       </div>
 
-      {/* Scroll indicator */}
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.7 }}
-        onClick={() => scrollTo("#portfolio")}
+      {/* ─── RIGHT PANEL — image ─── */}
+      <div
         style={{
-          position: "absolute",
-          bottom: "2.5rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: "var(--text-2)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "6px",
-          zIndex: 2,
+          flex: isMobile ? "none" : "1",
+          position: "relative",
+          height: isMobile ? "45vw" : "auto",
+          minHeight: isMobile ? "220px" : "unset",
+          overflow: "hidden",
         }}
       >
-        <span style={{ fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase" }}>
-          Scroll
-        </span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-        >
-          <ChevronDown size={16} />
-        </motion.div>
-      </motion.button>
+        {/* Copper vertical stripe — desktop only */}
+        {!isMobile && (
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: "3px",
+              background: "linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent)",
+              zIndex: 2,
+            }}
+          />
+        )}
 
-      {/* Side text — dark only */}
-      {isDark && (
-        <>
+        <Image
+          src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1400&q=85&fit=crop&crop=center"
+          alt="Palacio de Justicia"
+          fill
+          priority
+          style={{ objectFit: "cover", objectPosition: isMobile ? "center 30%" : "center" }}
+        />
+
+        {/* Dark overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: isMobile
+              ? "linear-gradient(to bottom, transparent 40%, var(--bg) 100%)"
+              : "linear-gradient(to right, rgba(7,17,31,0.25) 0%, transparent 60%)",
+          }}
+        />
+
+        {/* Location badge — desktop */}
+        {!isMobile && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
+            initial={{ opacity: 0, y: prefersReduced ? 0 : 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: prefersReduced ? 0 : 1.2, duration: prefersReduced ? 0.01 : 0.5 }}
             style={{
               position: "absolute",
-              left: "32px",
-              top: "50%",
-              transform: "translateY(-50%) rotate(-90deg)",
-              fontSize: "0.6rem",
-              letterSpacing: "0.25em",
-              textTransform: "uppercase",
-              color: "var(--text-3)",
-              zIndex: 2,
-            }}
-          >
-            @gabriellucero.ph
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            style={{
-              position: "absolute",
+              bottom: "32px",
               right: "32px",
-              top: "50%",
-              transform: "translateY(-50%) rotate(90deg)",
-              fontSize: "0.6rem",
-              letterSpacing: "0.25em",
-              textTransform: "uppercase",
-              color: "var(--text-3)",
+              background: "rgba(7,17,31,0.85)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid var(--border-subtle)",
+              padding: "14px 20px",
               zIndex: 2,
             }}
           >
-            Buenos Aires · Argentina
+            <div
+              style={{
+                fontSize: "0.58rem",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "var(--gold)",
+                marginBottom: "3px",
+              }}
+            >
+              San Luis
+            </div>
+            <div
+              style={{
+                fontSize: "0.7rem",
+                color: "var(--text-2)",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Argentina
+            </div>
           </motion.div>
-        </>
-      )}
+        )}
+      </div>
     </section>
   );
 }

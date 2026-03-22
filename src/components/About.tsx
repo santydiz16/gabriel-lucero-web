@@ -1,72 +1,33 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useInView } from "framer-motion";
+import { useState, useEffect } from "react";
 import AnimateIn from "./AnimateIn";
-import { Film, Award } from "lucide-react";
 import Image from "next/image";
 
-const IgIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-  </svg>
-);
-
-const stats = [
-  { to: 6, suffix: "+", label: "Años de experiencia" },
-  { to: 200, suffix: "+", label: "Producciones filmadas" },
-  { to: 8, suffix: "", label: "Países" },
-  { to: 100, suffix: "%", label: "Clientes satisfechos" },
+const pillars = [
+  {
+    num: "01",
+    title: "Ética ante todo",
+    desc: "Actuamos con integridad en cada caso, sin comprometer valores por resultados.",
+  },
+  {
+    num: "02",
+    title: "Estrategia sólida",
+    desc: "Cada expediente se analiza en profundidad antes de dar el primer paso.",
+  },
+  {
+    num: "03",
+    title: "Comunicación real",
+    desc: "Te informamos en cada etapa. Sin tecnicismos, sin sorpresas.",
+  },
+  {
+    num: "04",
+    title: "Resultados concretos",
+    desc: "Trabajamos con metas claras y medibles desde la primera consulta.",
+  },
 ];
 
-function CountUp({
-  to,
-  suffix,
-  isDark,
-}: {
-  to: number;
-  suffix: string;
-  isDark: boolean;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-    const duration = 1800;
-    const steps = 60;
-    const increment = to / steps;
-    let current = 0;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= to) {
-        setCount(to);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(current));
-      }
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [isInView, to]);
-
-  return (
-    <div ref={ref} className="heading-serif" style={{ lineHeight: 1 }}>
-      <span
-        style={{
-          fontSize: "2.2rem",
-          fontWeight: isDark ? 400 : 300,
-          color: isDark ? "var(--gold)" : "var(--text)",
-        }}
-      >
-        {count}{suffix}
-      </span>
-    </div>
-  );
-}
-
-export default function About({ variant }: { variant: "dark" | "minimal" }) {
-  const isDark = variant === "dark";
+export default function About({ variant: _variant }: { variant: "dark" | "minimal" }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -81,222 +42,245 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
       id="nosotros"
       style={{
         padding: isMobile ? "80px 0" : "120px 0",
-        background: isDark ? "var(--bg-3)" : "var(--bg-2)",
+        background: "var(--bg)",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px" }}>
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: isMobile ? "0 20px" : "0 clamp(32px, 5vw, 72px)",
+        }}
+      >
+        {/* Section label */}
+        <AnimateIn>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              marginBottom: isMobile ? "2rem" : "3rem",
+            }}
+          >
+            <div style={{ width: "24px", height: "2px", background: "var(--gold)" }} />
+            <span
+              style={{
+                fontSize: "0.62rem",
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                color: "var(--gold)",
+                fontWeight: 600,
+              }}
+            >
+              Nosotros
+            </span>
+          </div>
+        </AnimateIn>
+
+        {/* Main row: photo + text */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: isMobile ? "48px" : "80px",
-            alignItems: "center",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            gap: isMobile ? "40px" : "80px",
+            marginBottom: isMobile ? "56px" : "80px",
+            alignItems: "start",
           }}
         >
-          {/* Photo side */}
+          {/* Image with number overlay */}
           <AnimateIn direction="right">
             <div style={{ position: "relative" }}>
               <div
                 style={{
-                  aspectRatio: isMobile ? "4/3" : "3/4",
+                  aspectRatio: "4/5",
                   position: "relative",
                   overflow: "hidden",
-                  border: isDark ? "1px solid var(--border-subtle)" : "none",
                 }}
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80&fit=crop&crop=center"
-                  alt="Gabriel Lucero — Videógrafo de bodas"
+                  src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=900&q=80&fit=crop&crop=center"
+                  alt="Equipo del estudio jurídico"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   style={{ objectFit: "cover", objectPosition: "center top" }}
                 />
-                {isDark && (
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    background: "linear-gradient(to top, rgba(8,8,8,0.4) 0%, transparent 60%)",
-                  }} />
-                )}
-              </div>
-
-              {/* Floating accent — desktop only */}
-              {isDark && !isMobile && (
+                {/* Navy overlay for sophistication */}
                 <div
                   style={{
                     position: "absolute",
-                    bottom: "-20px",
-                    right: "-20px",
-                    width: "120px",
-                    height: "120px",
-                    border: "1px solid var(--border)",
-                    background: "var(--bg)",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "4px",
+                    inset: 0,
+                    background: "rgba(7,17,31,0.2)",
                   }}
-                >
-                  <Film size={24} style={{ color: "var(--gold)" }} />
-                  <span
-                    style={{
-                      fontSize: "0.6rem",
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      color: "var(--text-2)",
-                      textAlign: "center",
-                    }}
-                  >
-                    Wedding
-                    <br />
-                    Film
-                  </span>
-                </div>
-              )}
+                />
+              </div>
+
+              {/* Large number decoration */}
+              <div
+                className="heading-display"
+                style={{
+                  position: "absolute",
+                  bottom: "-24px",
+                  right: "-16px",
+                  fontSize: "8rem",
+                  color: "var(--bg-4)",
+                  lineHeight: 1,
+                  userSelect: "none",
+                  pointerEvents: "none",
+                }}
+              >
+                GN
+              </div>
             </div>
           </AnimateIn>
 
-          {/* Text side */}
-          <div>
-            <AnimateIn direction={isMobile ? "up" : "left"}>
-              <p
-                style={{
-                  fontSize: "0.7rem",
-                  letterSpacing: "0.25em",
-                  textTransform: "uppercase",
-                  color: "var(--gold)",
-                  marginBottom: "1rem",
-                }}
-              >
-                Sobre mí
-              </p>
-              <h2
+          {/* Text block */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              paddingTop: isMobile ? 0 : "2rem",
+            }}
+          >
+            <AnimateIn direction="left">
+              {/* Pull quote in serif */}
+              <blockquote
                 className="heading-serif"
                 style={{
-                  fontSize: "clamp(2rem, 4vw, 3rem)",
-                  fontWeight: isDark ? 400 : 300,
+                  fontSize: isMobile ? "1.3rem" : "clamp(1.4rem, 2.5vw, 1.9rem)",
+                  fontWeight: 400,
+                  fontStyle: "italic",
                   color: "var(--text)",
+                  lineHeight: 1.45,
+                  borderLeft: "3px solid var(--gold)",
+                  paddingLeft: "24px",
                   margin: "0 0 2rem",
-                  lineHeight: 1.1,
-                  letterSpacing: isDark ? "-0.01em" : "-0.03em",
                 }}
               >
-                {isDark ? (
-                  <>
-                    Hola, soy Gabriel.
-                    <br />
-                    <em>Cuento historias</em>
-                    <br />
-                    con una cámara.
-                  </>
-                ) : (
-                  <>
-                    Hola, soy Gabriel.
-                    <br />
-                    Cuento historias
-                    <br />
-                    con una cámara.
-                  </>
-                )}
-              </h2>
+                "Cada caso importa. Cada cliente merece una defensa a la altura
+                de sus derechos."
+              </blockquote>
             </AnimateIn>
 
-            <AnimateIn direction={isMobile ? "up" : "left"} delay={0.1}>
+            <AnimateIn direction="left" delay={0.1}>
               <p
                 style={{
-                  fontSize: "0.95rem",
+                  fontSize: "0.92rem",
                   color: "var(--text-2)",
-                  lineHeight: 1.8,
+                  lineHeight: 1.85,
                   margin: "0 0 1.2rem",
                 }}
               >
-                Soy videógrafo especializado en bodas, fiestas de XV y
-                videoclips artísticos. Apasionado por capturar la autenticidad
-                de cada momento, creo que cada historia merece ser contada con
-                belleza, emoción y un estilo cinematográfico único.
+                El Estudio Jurídico G.N. nació de la convicción de que el acceso
+                a una defensa legal de calidad no debería ser un privilegio.
+                Fundado por profesionales con más de 15 años de trayectoria,
+                combinamos experiencia técnica con un enfoque humano y directo.
               </p>
               <p
                 style={{
-                  fontSize: "0.95rem",
+                  fontSize: "0.92rem",
                   color: "var(--text-2)",
-                  lineHeight: 1.8,
-                  margin: "0 0 2.5rem",
+                  lineHeight: 1.85,
+                  margin: 0,
                 }}
               >
-                Con más de 6 años de experiencia filmando en Argentina, Colombia,
-                Italia y más, mi enfoque es siempre el mismo: ser invisible
-                durante el evento para que seas completamente libre, y crear
-                una película que te quite el aliento cada vez que la reveas.
+                Trabajamos en las principales ramas del derecho argentino con
+                una metodología clara: escuchar primero, estrategia después,
+                resultados siempre.
               </p>
             </AnimateIn>
 
-            {/* Animated Stats */}
-            <AnimateIn direction={isMobile ? "up" : "left"} delay={0.15}>
+            {/* Tags */}
+            <AnimateIn direction="left" delay={0.15}>
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: "1.5rem",
-                  marginBottom: "2.5rem",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "8px",
+                  marginTop: "2rem",
                 }}
               >
-                {stats.map((stat) => (
-                  <div key={stat.label}>
-                    <CountUp to={stat.to} suffix={stat.suffix} isDark={isDark} />
-                    <div
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--text-2)",
-                        letterSpacing: "0.05em",
-                        marginTop: "4px",
-                      }}
-                    >
-                      {stat.label}
-                    </div>
-                  </div>
+                {[
+                  "Matrícula activa",
+                  "Confidencialidad",
+                  "Colegio de Abogados CABA",
+                ].map((t) => (
+                  <span
+                    key={t}
+                    style={{
+                      padding: "6px 14px",
+                      background: "var(--bg-2)",
+                      border: "1px solid var(--border-subtle)",
+                      fontSize: "0.66rem",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      color: "var(--text-3)",
+                    }}
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </AnimateIn>
+          </div>
+        </div>
 
-            {/* Social */}
-            <AnimateIn direction={isMobile ? "up" : "left"} delay={0.2}>
-              <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
-                <a
-                  href="https://www.instagram.com/gabriellucero.ph"
-                  target="_blank"
-                  rel="noopener noreferrer"
+        {/* Pillars grid — 4 columns */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
+            gap: "0",
+            borderTop: "1px solid var(--border-subtle)",
+          }}
+        >
+          {pillars.map((p, i) => (
+            <AnimateIn key={p.num} delay={i * 0.08}>
+              <div
+                style={{
+                  padding: isMobile ? "28px 16px 28px 0" : "40px 32px 40px 0",
+                  borderRight:
+                    (isMobile && i % 2 === 0) || (!isMobile && i < 3)
+                      ? "1px solid var(--border-subtle)"
+                      : "none",
+                  paddingRight: "32px",
+                }}
+              >
+                <div
+                  className="heading-display"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    color: "var(--text-2)",
-                    textDecoration: "none",
-                    fontSize: "0.8rem",
-                    transition: "color 0.2s",
-                    border: "1px solid var(--border)",
-                    padding: "10px 20px",
+                    fontSize: "2.5rem",
+                    color: "var(--bg-3)",
+                    marginBottom: "16px",
+                    lineHeight: 1,
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = "var(--gold)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-2)")}
                 >
-                  <IgIcon />
-                  @gabriellucero.ph
-                </a>
+                  {p.num}
+                </div>
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    color: "var(--gold)",
-                    fontSize: "0.75rem",
+                    fontSize: "0.82rem",
+                    fontWeight: 700,
+                    color: "var(--text)",
+                    letterSpacing: "0.02em",
+                    marginBottom: "8px",
+                    textTransform: "uppercase",
                   }}
                 >
-                  <Award size={14} />
-                  <span style={{ letterSpacing: "0.05em" }}>Premiado 2023</span>
+                  {p.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "var(--text-2)",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {p.desc}
                 </div>
               </div>
             </AnimateIn>
-          </div>
+          ))}
         </div>
       </div>
     </section>

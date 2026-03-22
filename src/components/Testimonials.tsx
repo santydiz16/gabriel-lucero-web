@@ -1,46 +1,48 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import AnimateIn from "./AnimateIn";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 const testimonials = [
   {
-    couple: "Camila & Martín",
-    date: "Boda · Marzo 2024 · Mendoza",
-    text: "Gabriel tiene una sensibilidad única para capturar lo que importa. Cuando vimos nuestra película por primera vez, lloramos como si estuviéramos viviendo ese día de nuevo. Cada mirada, cada abrazo... todo está ahí. Es un artista.",
-    rating: 5,
+    name: "M. González",
+    context: "Derecho Laboral · 2024",
+    text: "Llegué al estudio en un momento muy difícil, luego de un despido injustificado. Me explicaron todo sin tecnicismos y me acompañaron en cada paso. El resultado superó lo que esperaba.",
+    highlight: "El resultado superó lo que esperaba.",
   },
   {
-    couple: "Valentina & Sebastián",
-    date: "Boda · Noviembre 2023 · Buenos Aires",
-    text: "Lo mejor que hicimos fue elegir a Gabriel. No lo sentimos como un extraño ese día — era parte de la celebración. La película superó todo lo que imaginamos. Nuestras familias la ven una y otra vez.",
-    rating: 5,
+    name: "F. Rodríguez",
+    context: "Derecho de Familia · 2024",
+    text: "Un divorcio muy complejo resuelto con una profesionalidad y sensibilidad que no esperaba. Rápido, claro y en los mejores términos. Los recomiendo sin dudarlo.",
+    highlight: "Rápido, claro y en los mejores términos.",
   },
   {
-    couple: "Isabela Torres",
-    date: "XV años · Agosto 2024 · Córdoba",
-    text: "Para los XV de mi hija quería algo diferente, algo que ella pudiera ver de grande y emocionarse. Gabriel entendió eso desde el primer minuto. El resultado fue una película preciosa que la hizo llorar de emoción. Todos nuestros familiares ya le pidieron su contacto.",
-    rating: 5,
+    name: "Empresa Textil S.A.",
+    context: "Derecho Comercial · 2023",
+    text: "Buscábamos un estudio que entendiera nuestro negocio. Nos asesoraron en la restructuración societaria y en contratos clave. Su respuesta siempre fue rápida y precisa.",
+    highlight: "Su respuesta siempre fue rápida y precisa.",
   },
   {
-    couple: "Matías Vega",
-    date: "Videoclip · Enero 2024 · Buenos Aires",
-    text: "Trabajar con Gabriel fue una experiencia increíble. Entiende la música, entiende la estética, y sabe cómo traducir una canción en imágenes. Mi videoclip quedó a un nivel cinematográfico que no esperaba. Definitivamente lo llamo para el próximo.",
-    rating: 5,
+    name: "C. Martínez",
+    context: "Derecho Civil · 2023",
+    text: "Un conflicto por herencia que parecía sin salida. En pocas semanas lograron un acuerdo que protegió mis derechos sin llegar a juicio. Excelente trabajo.",
+    highlight: "Protegió mis derechos sin llegar a juicio.",
   },
   {
-    couple: "Florencia & Diego",
-    date: "Boda · Mayo 2024 · Córdoba",
-    text: "Desde la primera reunión supimos que estábamos en las manos correctas. Gabriel entendió exactamente el estilo que queríamos y lo llevó a otro nivel. Cada vez que lo mostramos a alguien, nos piden su contacto.",
-    rating: 5,
+    name: "R. Pérez",
+    context: "Derecho Penal · 2024",
+    text: "En la situación más difícil de mi vida, contar con abogados que realmente defiendan tu causa hace toda la diferencia. Rapidez, claridad y estrategia impecable.",
+    highlight: "Rapidez, claridad y estrategia impecable.",
+  },
+  {
+    name: "L. Sánchez",
+    context: "Derecho Inmobiliario · 2024",
+    text: "Tuve un problema complejo con un inquilino que no pagaba. El desalojo se resolvió mucho más rápido de lo que pensaba. Muy profesionales y atentos en todo momento.",
+    highlight: "Se resolvió mucho más rápido de lo que pensaba.",
   },
 ];
 
-export default function Testimonials({ variant }: { variant: "dark" | "minimal" }) {
-  const isDark = variant === "dark";
-  const [current, setCurrent] = useState(0);
+export default function Testimonials({ variant: _variant }: { variant: "dark" | "minimal" }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -50,270 +52,205 @@ export default function Testimonials({ variant }: { variant: "dark" | "minimal" 
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
-  const next = () => setCurrent((c) => (c + 1) % testimonials.length);
-
   return (
     <section
       id="testimonios"
       style={{
         padding: isMobile ? "80px 0" : "120px 0",
-        background: isDark ? "var(--bg-2)" : "var(--bg)",
-        position: "relative",
-        overflow: "hidden",
+        background: "var(--bg-2)",
       }}
     >
-      {/* Background decoration */}
-      {isDark && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "600px",
-            height: "600px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(201,168,92,0.04) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-      )}
-
       <div
         style={{
-          maxWidth: "900px",
+          maxWidth: "1200px",
           margin: "0 auto",
-          padding: isMobile ? "0 20px" : "0 32px",
-          position: "relative",
+          padding: isMobile ? "0 20px" : "0 clamp(32px, 5vw, 72px)",
         }}
       >
         {/* Header */}
         <AnimateIn>
-          <div style={{ marginBottom: "4rem", textAlign: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: isMobile ? "column" : "row",
+              alignItems: isMobile ? "flex-start" : "flex-end",
+              justifyContent: "space-between",
+              gap: "2rem",
+              marginBottom: isMobile ? "2.5rem" : "4rem",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginBottom: "1rem",
+                }}
+              >
+                <div style={{ width: "24px", height: "2px", background: "var(--gold)" }} />
+                <span
+                  style={{
+                    fontSize: "0.62rem",
+                    letterSpacing: "0.25em",
+                    textTransform: "uppercase",
+                    color: "var(--gold)",
+                    fontWeight: 600,
+                  }}
+                >
+                  Testimonios
+                </span>
+              </div>
+              <h2
+                className="heading-display"
+                style={{
+                  fontSize: "clamp(2.2rem, 5vw, 4rem)",
+                  color: "var(--text)",
+                  margin: 0,
+                }}
+              >
+                LO QUE DICEN
+                <br />
+                NUESTROS CLIENTES.
+              </h2>
+            </div>
             <p
               style={{
-                fontSize: "0.7rem",
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                color: "var(--gold)",
-                marginBottom: "1rem",
-              }}
-            >
-              Testimonios
-            </p>
-            <h2
-              className="heading-serif"
-              style={{
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                fontWeight: isDark ? 400 : 300,
-                color: "var(--text)",
+                fontSize: "0.82rem",
+                color: "var(--text-2)",
+                lineHeight: 1.7,
+                maxWidth: "280px",
                 margin: 0,
-                lineHeight: 1.1,
-                letterSpacing: isDark ? "-0.01em" : "-0.03em",
               }}
             >
-              {isDark ? (
-                <>
-                  Lo que dicen
-                  <br />
-                  <em>nuestros clientes</em>
-                </>
-              ) : (
-                <>
-                  Lo que dicen
-                  <br />
-                  nuestros clientes
-                </>
-              )}
-            </h2>
+              Nombres abreviados para preservar la privacidad de nuestros clientes.
+            </p>
           </div>
         </AnimateIn>
 
-        {/* Testimonial card */}
+        {/* Masonry 2-column grid */}
         <div
           style={{
-            position: "relative",
-            minHeight: "320px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+            display: "grid",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+            gap: "1px",
+            background: "var(--border-subtle)",
           }}
         >
-          {/* Quote icon */}
-          <Quote
-            size={isDark ? 48 : 32}
-            style={{
-              color: isDark ? "rgba(201,168,92,0.2)" : "rgba(0,0,0,0.06)",
-              marginBottom: "1.5rem",
-            }}
-          />
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.4 }}
-            >
-              <blockquote
-                className={isDark ? "heading-serif" : ""}
-                style={{
-                  fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
-                  fontWeight: isDark ? 400 : 300,
-                  fontStyle: isDark ? "italic" : "normal",
-                  color: "var(--text)",
-                  lineHeight: 1.6,
-                  margin: "0 0 2.5rem",
-                  letterSpacing: isDark ? "0" : "-0.01em",
-                }}
-              >
-                &ldquo;{testimonials[current].text}&rdquo;
-              </blockquote>
-
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
-                {/* Avatar placeholder */}
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "50%",
-                    background: isDark
-                      ? "linear-gradient(135deg, #2d1f0a, #1a1208)"
-                      : "linear-gradient(135deg, #e8e4dc, #d0ccc4)",
-                    border: `1px solid var(--border)`,
-                    flexShrink: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1rem",
-                    color: "var(--gold)",
-                    fontFamily: isDark ? "var(--font-playfair, serif)" : "inherit",
-                    fontStyle: "italic",
-                  }}
-                >
-                  {testimonials[current].couple[0]}
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontSize: "0.95rem",
-                      fontWeight: 500,
-                      color: "var(--text)",
-                      margin: 0,
-                    }}
-                  >
-                    {testimonials[current].couple}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "0.75rem",
-                      color: "var(--gold)",
-                      margin: "3px 0 0",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
-                    {testimonials[current].date}
-                  </p>
-                </div>
-                {/* Stars */}
-                <div style={{ marginLeft: "auto", display: "flex", gap: "2px" }}>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <span key={i} style={{ color: "var(--gold)", fontSize: "0.8rem" }}>
-                      ★
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Navigation */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: "3rem",
-          }}
-        >
-          {/* Dots */}
-          <div style={{ display: "flex", gap: "8px" }}>
-            {testimonials.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                style={{
-                  width: i === current ? "24px" : "6px",
-                  height: "6px",
-                  borderRadius: "3px",
-                  background: i === current ? "var(--gold)" : "var(--border)",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                  transition: "all 0.3s",
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Arrows */}
-          <div style={{ display: "flex", gap: "12px" }}>
-            <button
-              onClick={prev}
-              style={{
-                width: "44px",
-                height: "44px",
-                border: "1px solid var(--border)",
-                background: "transparent",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "var(--text-2)",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "var(--gold)";
-                e.currentTarget.style.color = "var(--gold)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "var(--border)";
-                e.currentTarget.style.color = "var(--text-2)";
-              }}
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              onClick={next}
-              style={{
-                width: "44px",
-                height: "44px",
-                border: "1px solid var(--border)",
-                background: "transparent",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "var(--text-2)",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "var(--gold)";
-                e.currentTarget.style.color = "var(--gold)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "var(--border)";
-                e.currentTarget.style.color = "var(--text-2)";
-              }}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
+          {testimonials.map((t, i) => (
+            <AnimateIn key={i} delay={i * 0.06}>
+              <TestimonialCard t={t} index={i} />
+            </AnimateIn>
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function TestimonialCard({
+  t,
+  index,
+}: {
+  t: (typeof testimonials)[0];
+  index: number;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: hovered ? "var(--bg-3)" : "var(--bg-2)",
+        padding: "40px 36px",
+        transition: "background 0.25s",
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        borderTop: index === 0 || index === 1 ? "3px solid var(--gold)" : "none",
+      }}
+    >
+      {/* Highlighted quote */}
+      <div
+        className="heading-serif"
+        style={{
+          fontSize: "1.05rem",
+          fontStyle: "italic",
+          fontWeight: 400,
+          color: "var(--gold)",
+          lineHeight: 1.4,
+        }}
+      >
+        &ldquo;{t.highlight}&rdquo;
+      </div>
+
+      {/* Full text */}
+      <p
+        style={{
+          fontSize: "0.85rem",
+          color: "var(--text-2)",
+          lineHeight: 1.8,
+          margin: 0,
+          flexGrow: 1,
+        }}
+      >
+        {t.text}
+      </p>
+
+      {/* Attribution */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          paddingTop: "16px",
+          borderTop: "1px solid var(--border-subtle)",
+        }}
+      >
+        {/* Initial badge */}
+        <div
+          style={{
+            width: "36px",
+            height: "36px",
+            background: "var(--gold-dim)",
+            border: "1px solid var(--border)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <span
+            className="heading-display"
+            style={{ fontSize: "0.85rem", color: "var(--gold)" }}
+          >
+            {t.name.charAt(0)}
+          </span>
+        </div>
+        <div>
+          <div
+            style={{
+              fontSize: "0.82rem",
+              fontWeight: 600,
+              color: "var(--text)",
+              letterSpacing: "0.02em",
+            }}
+          >
+            {t.name}
+          </div>
+          <div
+            style={{
+              fontSize: "0.68rem",
+              color: "var(--gold)",
+              letterSpacing: "0.08em",
+              marginTop: "2px",
+            }}
+          >
+            {t.context}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,210 +1,295 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 
 const links = [
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Servicios", href: "#servicios" },
+  { label: "Nosotros", href: "#nosotros" },
+  { label: "Áreas", href: "#areas" },
   { label: "Proceso", href: "#proceso" },
   { label: "Testimonios", href: "#testimonios" },
-  { label: "Nosotros", href: "#nosotros" },
 ];
 
-export default function Navbar({ variant }: { variant: "dark" | "minimal" }) {
+export default function Navbar({ variant: _variant }: { variant: "dark" | "minimal" }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const isDark = variant === "dark";
+  const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sectionIds = links.map((l) => l.href.slice(1));
+    const observers: IntersectionObserver[] = [];
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSection(id); },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   const scrollTo = (href: string) => {
     setOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      <header
         style={{
           position: "fixed",
           top: 0,
           left: 0,
           right: 0,
           zIndex: 100,
-          padding: "0 32px",
-          height: scrolled ? "64px" : "80px",
+          height: scrolled ? "60px" : "72px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          padding: "0 clamp(20px, 4vw, 48px)",
           transition: "all 0.3s ease",
-          background: scrolled
-            ? isDark
-              ? "rgba(8,8,8,0.92)"
-              : "rgba(250,250,248,0.92)"
-            : "transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          borderBottom: scrolled
-            ? `1px solid ${isDark ? "rgba(201,168,92,0.15)" : "rgba(0,0,0,0.08)"}`
-            : "none",
+          background: scrolled ? "rgba(7,17,31,0.96)" : "transparent",
+          backdropFilter: scrolled ? "blur(20px)" : "none",
+          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "none",
         }}
       >
         {/* Logo */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+          aria-label="Ir al inicio"
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
         >
+          {/* Logo monogram */}
+          <Image
+            src="/logo.png"
+            alt="Estudio Jurídico G.N."
+            width={44}
+            height={44}
+            style={{ mixBlendMode: "screen", objectFit: "contain" }}
+            priority
+          />
           <div
             style={{
-              fontFamily: isDark ? "var(--font-playfair, 'Playfair Display', serif)" : "var(--font-inter, Inter, sans-serif)",
-              fontSize: "1.1rem",
-              fontWeight: isDark ? 500 : 300,
-              letterSpacing: isDark ? "0.08em" : "-0.02em",
-              color: "var(--text)",
-              lineHeight: 1,
-            }}
-          >
-            Gabriel Lucero
-          </div>
-          <div
-            style={{
-              fontSize: "0.6rem",
+              fontSize: "0.52rem",
               letterSpacing: "0.2em",
-              color: "var(--gold)",
-              marginTop: "2px",
+              color: "var(--text-2)",
               textTransform: "uppercase",
+              lineHeight: 1.3,
             }}
           >
-            Film & Producción
+            Estudio Jurídico
           </div>
         </button>
 
         {/* Desktop nav */}
-        <nav style={{ gap: "2rem", alignItems: "center" }} className="hidden md:flex">
-          {links.map((l) => (
-            <button
-              key={l.href}
-              onClick={() => scrollTo(l.href)}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "0.8rem",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: "var(--text-2)",
-                transition: "color 0.2s",
-                padding: "4px 0",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-2)")}
-            >
-              {l.label}
-            </button>
-          ))}
+        <nav className="hidden md:flex" style={{ alignItems: "center", gap: "2.5rem" }}>
+          {links.map((l) => {
+            const isActive = activeSection === l.href.slice(1);
+            return (
+              <button
+                key={l.href}
+                onClick={() => scrollTo(l.href)}
+                aria-current={isActive ? "true" : undefined}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "0.72rem",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: isActive ? "var(--gold)" : "var(--text-3)",
+                  transition: "color 0.2s",
+                  padding: 0,
+                  fontFamily: "inherit",
+                  fontWeight: isActive ? 600 : 500,
+                  position: "relative",
+                }}
+                onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = "var(--text)"; }}
+                onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.color = "var(--text-3)"; }}
+              >
+                {l.label}
+              </button>
+            );
+          })}
+
+          {/* CTA */}
           <button
             onClick={() => scrollTo("#contacto")}
             style={{
-              background: "var(--gold)",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "none",
               border: "none",
               cursor: "pointer",
-              color: isDark ? "#080808" : "#fff",
-              fontSize: "0.75rem",
+              fontSize: "0.72rem",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              padding: "10px 24px",
+              color: "var(--gold)",
+              padding: 0,
+              fontFamily: "inherit",
               fontWeight: 600,
-              transition: "background 0.2s",
+              transition: "opacity 0.2s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--gold-hover)")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "var(--gold)")}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Reservar fecha
+            Consulta gratuita
+            <ArrowUpRight size={12} />
           </button>
         </nav>
 
-        {/* Mobile menu button */}
+        {/* Mobile toggle */}
         <button
           className="md:hidden"
           onClick={() => setOpen(!open)}
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={open}
           style={{
             background: "none",
             border: "none",
             cursor: "pointer",
             color: "var(--text)",
             padding: "4px",
+            display: "flex",
           }}
         >
-          {open ? <X size={22} /> : <Menu size={22} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
-      </motion.header>
+      </header>
 
       {/* Mobile menu */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: "fixed",
-              inset: 0,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: "min(320px, 85vw)",
               zIndex: 99,
-              background: isDark ? "#080808" : "#FAFAF8",
+              background: "var(--bg-2)",
+              borderLeft: "1px solid var(--border-subtle)",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "2.5rem",
+              padding: "80px 36px 48px",
             }}
           >
-            {links.map((l) => (
-              <button
-                key={l.href}
-                onClick={() => scrollTo(l.href)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: "1.5rem",
-                  fontFamily: isDark ? "var(--font-playfair, 'Playfair Display', serif)" : "inherit",
-                  fontStyle: isDark ? "italic" : "normal",
-                  color: "var(--text)",
-                  fontWeight: 400,
-                }}
-              >
-                {l.label}
-              </button>
-            ))}
+            {/* Copper accent line */}
+            <div
+              style={{
+                width: "24px",
+                height: "2px",
+                background: "var(--gold)",
+                marginBottom: "2.5rem",
+              }}
+            />
+
+            <nav style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+              {links.map((l, i) => (
+                <button
+                  key={l.href}
+                  onClick={() => scrollTo(l.href)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    borderBottom: "1px solid var(--border-subtle)",
+                    cursor: "pointer",
+                    fontSize: "1.1rem",
+                    fontWeight: 700,
+                    letterSpacing: "-0.01em",
+                    color: "var(--text)",
+                    padding: "20px 0",
+                    textAlign: "left",
+                    fontFamily: "inherit",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span>{l.label}</span>
+                  <span
+                    style={{
+                      fontSize: "0.6rem",
+                      color: "var(--text-3)",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    0{i + 1}
+                  </span>
+                </button>
+              ))}
+            </nav>
+
             <button
               onClick={() => scrollTo("#contacto")}
               style={{
+                marginTop: "auto",
                 background: "var(--gold)",
                 border: "none",
                 cursor: "pointer",
-                color: isDark ? "#080808" : "#fff",
-                fontSize: "0.8rem",
-                letterSpacing: "0.15em",
+                color: "#fff",
+                fontSize: "0.75rem",
+                letterSpacing: "0.16em",
                 textTransform: "uppercase",
-                padding: "14px 36px",
-                fontWeight: 600,
-                marginTop: "1rem",
+                padding: "16px 28px",
+                fontWeight: 700,
+                fontFamily: "inherit",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                justifyContent: "center",
               }}
             >
-              Reservar fecha
+              Consulta gratuita
+              <ArrowUpRight size={14} />
             </button>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile overlay bg */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 98,
+              background: "rgba(7,17,31,0.6)",
+              backdropFilter: "blur(4px)",
+            }}
+          />
         )}
       </AnimatePresence>
     </>
