@@ -1,49 +1,104 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
+import { useInView } from "framer-motion";
 import AnimateIn from "./AnimateIn";
 import { Film, Award } from "lucide-react";
+import Image from "next/image";
 
 const IgIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
   </svg>
 );
-import Image from "next/image";
 
 const stats = [
-  { value: "6+", label: "Años de experiencia" },
-  { value: "200+", label: "Producciones filmadas" },
-  { value: "8", label: "Países" },
-  { value: "100%", label: "Clientes satisfechos" },
+  { to: 6, suffix: "+", label: "Años de experiencia" },
+  { to: 200, suffix: "+", label: "Producciones filmadas" },
+  { to: 8, suffix: "", label: "Países" },
+  { to: 100, suffix: "%", label: "Clientes satisfechos" },
 ];
+
+function CountUp({
+  to,
+  suffix,
+  isDark,
+}: {
+  to: number;
+  suffix: string;
+  isDark: boolean;
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const duration = 1800;
+    const steps = 60;
+    const increment = to / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= to) {
+        setCount(to);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
+      }
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [isInView, to]);
+
+  return (
+    <div ref={ref} className="heading-serif" style={{ lineHeight: 1 }}>
+      <span
+        style={{
+          fontSize: "2.2rem",
+          fontWeight: isDark ? 400 : 300,
+          color: isDark ? "var(--gold)" : "var(--text)",
+        }}
+      >
+        {count}{suffix}
+      </span>
+    </div>
+  );
+}
 
 export default function About({ variant }: { variant: "dark" | "minimal" }) {
   const isDark = variant === "dark";
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <section
       id="nosotros"
       style={{
-        padding: "120px 0",
+        padding: isMobile ? "80px 0" : "120px 0",
         background: isDark ? "var(--bg-3)" : "var(--bg-2)",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px" }}>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "80px",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: isMobile ? "48px" : "80px",
             alignItems: "center",
           }}
         >
           {/* Photo side */}
           <AnimateIn direction="right">
             <div style={{ position: "relative" }}>
-              {/* Photographer photo */}
               <div
                 style={{
-                  aspectRatio: "3/4",
+                  aspectRatio: isMobile ? "4/3" : "3/4",
                   position: "relative",
                   overflow: "hidden",
                   border: isDark ? "1px solid var(--border-subtle)" : "none",
@@ -64,8 +119,8 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
                 )}
               </div>
 
-              {/* Floating accent element */}
-              {isDark && (
+              {/* Floating accent — desktop only */}
+              {isDark && !isMobile && (
                 <div
                   style={{
                     position: "absolute",
@@ -103,7 +158,7 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
 
           {/* Text side */}
           <div>
-            <AnimateIn direction="left">
+            <AnimateIn direction={isMobile ? "up" : "left"}>
               <p
                 style={{
                   fontSize: "0.7rem",
@@ -146,7 +201,7 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
               </h2>
             </AnimateIn>
 
-            <AnimateIn direction="left" delay={0.1}>
+            <AnimateIn direction={isMobile ? "up" : "left"} delay={0.1}>
               <p
                 style={{
                   fontSize: "0.95rem",
@@ -175,8 +230,8 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
               </p>
             </AnimateIn>
 
-            {/* Stats */}
-            <AnimateIn direction="left" delay={0.15}>
+            {/* Animated Stats */}
+            <AnimateIn direction={isMobile ? "up" : "left"} delay={0.15}>
               <div
                 style={{
                   display: "grid",
@@ -187,23 +242,13 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
               >
                 {stats.map((stat) => (
                   <div key={stat.label}>
-                    <div
-                      className="heading-serif"
-                      style={{
-                        fontSize: "2rem",
-                        fontWeight: isDark ? 400 : 300,
-                        color: isDark ? "var(--gold)" : "var(--text)",
-                        lineHeight: 1,
-                        marginBottom: "4px",
-                      }}
-                    >
-                      {stat.value}
-                    </div>
+                    <CountUp to={stat.to} suffix={stat.suffix} isDark={isDark} />
                     <div
                       style={{
                         fontSize: "0.75rem",
                         color: "var(--text-2)",
                         letterSpacing: "0.05em",
+                        marginTop: "4px",
                       }}
                     >
                       {stat.label}
@@ -214,8 +259,8 @@ export default function About({ variant }: { variant: "dark" | "minimal" }) {
             </AnimateIn>
 
             {/* Social */}
-            <AnimateIn direction="left" delay={0.2}>
-              <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+            <AnimateIn direction={isMobile ? "up" : "left"} delay={0.2}>
+              <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
                 <a
                   href="https://www.instagram.com/gabriellucero.ph"
                   target="_blank"

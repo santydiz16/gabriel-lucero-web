@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AnimateIn from "./AnimateIn";
 import { MessageCircle, Send, Calendar } from "lucide-react";
 
@@ -20,11 +20,17 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
     mensaje: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Here you'd integrate with a form service (Formspree, EmailJS, etc.)
-    // For now, open WhatsApp with the message
     const msg = encodeURIComponent(
       `Hola Gabriel! Me llamo ${formData.nombre}.\n\nFecha del evento: ${formData.fecha}\nEmail: ${formData.email}\n\n${formData.mensaje}`
     );
@@ -58,11 +64,11 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
     <section
       id="contacto"
       style={{
-        padding: "120px 0",
+        padding: isMobile ? "80px 0" : "120px 0",
         background: isDark ? "var(--bg)" : "var(--bg)",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px" }}>
         {/* Urgency banner */}
         <AnimateIn>
           <div
@@ -73,20 +79,20 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
               padding: "12px 20px",
               background: "var(--gold-dim)",
               border: "1px solid var(--border)",
-              marginBottom: "4rem",
+              marginBottom: isMobile ? "2.5rem" : "4rem",
               width: "fit-content",
             }}
           >
-            <Calendar size={14} style={{ color: "var(--gold)" }} />
+            <Calendar size={14} style={{ color: "var(--gold)", flexShrink: 0 }} />
             <p
               style={{
                 margin: 0,
-                fontSize: "0.8rem",
+                fontSize: isMobile ? "0.75rem" : "0.8rem",
                 color: "var(--gold)",
                 letterSpacing: "0.08em",
               }}
             >
-              <strong>Fechas 2026 casi agotadas</strong> — Consultá disponibilidad para tu evento
+              <strong>Fechas 2026 casi agotadas</strong> — Consultá disponibilidad
             </p>
           </div>
         </AnimateIn>
@@ -94,8 +100,8 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "80px",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: isMobile ? "48px" : "80px",
             alignItems: "start",
           }}
         >
@@ -177,7 +183,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                     (e.currentTarget.style.borderColor = "var(--border-subtle)")
                   }
                 >
-                  <MessageCircle size={18} style={{ color: "var(--gold)" }} />
+                  <MessageCircle size={18} style={{ color: "var(--gold)", flexShrink: 0 }} />
                   <div>
                     <div style={{ fontWeight: 500 }}>WhatsApp</div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-2)" }}>
@@ -221,7 +227,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
           </div>
 
           {/* Right: Form */}
-          <AnimateIn direction="left" delay={0.1}>
+          <AnimateIn direction={isMobile ? "up" : "left"} delay={0.1}>
             {submitted ? (
               <div
                 style={{
@@ -249,8 +255,9 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                {/* Nombre + Email — stack on mobile */}
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "16px" }}>
                   <div>
                     <label style={labelStyle}>Nombre *</label>
                     <input
@@ -279,7 +286,8 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                {/* WhatsApp + Fecha — stack on mobile */}
+                <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "16px" }}>
                   <div>
                     <label style={labelStyle}>WhatsApp</label>
                     <input
@@ -336,6 +344,7 @@ export default function Contact({ variant }: { variant: "dark" | "minimal" }) {
                     justifyContent: "center",
                     gap: "8px",
                     transition: "background 0.2s",
+                    width: "100%",
                   }}
                   onMouseEnter={(e) => (e.currentTarget.style.background = "var(--gold-hover)")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "var(--gold)")}

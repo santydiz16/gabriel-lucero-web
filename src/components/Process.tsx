@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import AnimateIn from "./AnimateIn";
 
 const steps = [
@@ -31,17 +32,25 @@ const steps = [
 
 export default function Process({ variant }: { variant: "dark" | "minimal" }) {
   const isDark = variant === "dark";
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   return (
     <section
       id="proceso"
       style={{
-        padding: "120px 0",
+        padding: isMobile ? "80px 0" : "120px 0",
         background: isDark ? "var(--bg)" : "var(--bg-2)",
         overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px" }}>
         {/* Header */}
         <AnimateIn>
           <div
@@ -111,8 +120,8 @@ export default function Process({ variant }: { variant: "dark" | "minimal" }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: isDark ? "0" : "48px",
+            gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: isMobile ? "32px" : isDark ? "0" : "48px",
             position: "relative",
           }}
         >

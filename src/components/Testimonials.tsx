@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimateIn from "./AnimateIn";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
@@ -41,6 +41,14 @@ const testimonials = [
 export default function Testimonials({ variant }: { variant: "dark" | "minimal" }) {
   const isDark = variant === "dark";
   const [current, setCurrent] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
   const next = () => setCurrent((c) => (c + 1) % testimonials.length);
@@ -49,7 +57,7 @@ export default function Testimonials({ variant }: { variant: "dark" | "minimal" 
     <section
       id="testimonios"
       style={{
-        padding: "120px 0",
+        padding: isMobile ? "80px 0" : "120px 0",
         background: isDark ? "var(--bg-2)" : "var(--bg)",
         position: "relative",
         overflow: "hidden",
@@ -76,7 +84,7 @@ export default function Testimonials({ variant }: { variant: "dark" | "minimal" 
         style={{
           maxWidth: "900px",
           margin: "0 auto",
-          padding: "0 32px",
+          padding: isMobile ? "0 20px" : "0 32px",
           position: "relative",
         }}
       >
@@ -164,7 +172,7 @@ export default function Testimonials({ variant }: { variant: "dark" | "minimal" 
                 &ldquo;{testimonials[current].text}&rdquo;
               </blockquote>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
                 {/* Avatar placeholder */}
                 <div
                   style={{

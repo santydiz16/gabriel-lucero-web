@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimateIn from "./AnimateIn";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, X, ZoomIn } from "lucide-react";
 import Image from "next/image";
 
 const categories = ["Todo", "Bodas", "XV", "Videoclips", "Destino"];
@@ -87,6 +87,30 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
   const isDark = variant === "dark";
   const [activeCategory, setActiveCategory] = useState("Todo");
   const [hovered, setHovered] = useState<number | null>(null);
+  const [lightboxItem, setLightboxItem] = useState<(typeof items)[0] | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxItem(null);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = lightboxItem ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [lightboxItem]);
 
   const filtered =
     activeCategory === "Todo"
@@ -97,14 +121,14 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
     <section
       id="portfolio"
       style={{
-        padding: "120px 0",
+        padding: isMobile ? "80px 0" : "120px 0",
         background: isDark ? "var(--bg)" : "var(--bg-2)",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px" }}>
         {/* Header */}
         <AnimateIn>
-          <div style={{ marginBottom: "4rem" }}>
+          <div style={{ marginBottom: isMobile ? "2.5rem" : "4rem" }}>
             <p
               style={{
                 fontSize: "0.7rem",
@@ -141,8 +165,8 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
           <div
             style={{
               display: "flex",
-              gap: "0.5rem",
-              marginBottom: "3rem",
+              gap: "0.4rem",
+              marginBottom: isMobile ? "1.5rem" : "3rem",
               flexWrap: "wrap",
             }}
           >
@@ -161,10 +185,10 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
                         ? "#080808"
                         : "#fff"
                       : "var(--text-2)",
-                  fontSize: "0.72rem",
+                  fontSize: isMobile ? "0.65rem" : "0.72rem",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  padding: "8px 20px",
+                  padding: isMobile ? "7px 14px" : "8px 20px",
                   fontWeight: activeCategory === cat ? 600 : 400,
                   transition: "all 0.2s",
                 }}
@@ -180,20 +204,33 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
           layout
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(12, 1fr)",
-            gap: "16px",
+            gridTemplateColumns: isMobile
+              ? "1fr 1fr"
+              : "repeat(12, 1fr)",
+            gap: isMobile ? "8px" : "16px",
           }}
         >
           <AnimatePresence mode="popLayout">
             {filtered.map((item, index) => {
-              const colSpan =
+              // On mobile: large items full-width, others half-width
+              const mobileSpan = item.size === "large" ? "span 2" : "span 1";
+              const desktopSpan =
                 item.size === "large"
                   ? "span 8"
                   : item.size === "medium"
                   ? "span 6"
                   : "span 4";
-              const aspectRatio =
-                item.size === "large" ? "16/9" : item.size === "medium" ? "4/3" : "3/4";
+              const colSpan = isMobile ? mobileSpan : desktopSpan;
+
+              const aspectRatio = isMobile
+                ? item.size === "large"
+                  ? "16/9"
+                  : "3/4"
+                : item.size === "large"
+                ? "16/9"
+                : item.size === "medium"
+                ? "4/3"
+                : "3/4";
 
               return (
                 <motion.div
@@ -210,35 +247,54 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
                     overflow: "hidden",
                     cursor: "pointer",
                   }}
+                  onClick={() => setLightboxItem(item)}
                   onMouseEnter={() => setHovered(item.id)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  {/* Real wedding photo */}
+                  {/* Photo */}
                   <Image
                     src={item.photo}
                     alt={item.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.6s ease" }}
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      transition: "transform 0.6s ease",
+                      transform: hovered === item.id ? "scale(1.04)" : "scale(1)",
+                    }}
                   />
 
-                  {/* Hover overlay */}
+                  {/* Hover overlay — on mobile always slightly visible */}
                   <motion.div
-                    animate={{ opacity: hovered === item.id ? 1 : 0 }}
+                    animate={{ opacity: isMobile ? 1 : hovered === item.id ? 1 : 0 }}
                     transition={{ duration: 0.25 }}
                     style={{
                       position: "absolute",
                       inset: 0,
                       background: isDark
-                        ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)"
-                        : "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 70%)",
+                        ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)"
+                        : "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 70%)",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "flex-end",
-                      padding: "24px",
+                      padding: isMobile ? "12px" : "24px",
                     }}
                   >
-                    {isDark && (
+                    {/* Zoom icon — desktop only */}
+                    {!isMobile && (
+                      <ZoomIn
+                        size={16}
+                        style={{
+                          position: "absolute",
+                          top: "16px",
+                          right: "16px",
+                          color: "rgba(255,255,255,0.8)",
+                        }}
+                      />
+                    )}
+
+                    {isDark && !isMobile && (
                       <div
                         style={{
                           width: "2rem",
@@ -251,26 +307,29 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
                     <p
                       className={isDark ? "heading-serif" : ""}
                       style={{
-                        fontSize: isDark ? "1.1rem" : "1rem",
+                        fontSize: isMobile ? "0.78rem" : isDark ? "1.1rem" : "1rem",
                         fontWeight: 400,
                         color: "#fff",
                         margin: 0,
                         fontStyle: isDark ? "italic" : "normal",
+                        lineHeight: 1.3,
                       }}
                     >
                       {item.title}
                     </p>
-                    <p
-                      style={{
-                        fontSize: "0.72rem",
-                        letterSpacing: "0.1em",
-                        color: isDark ? "var(--gold)" : "rgba(255,255,255,0.7)",
-                        margin: "4px 0 0",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {item.location}
-                    </p>
+                    {!isMobile && (
+                      <p
+                        style={{
+                          fontSize: "0.72rem",
+                          letterSpacing: "0.1em",
+                          color: isDark ? "var(--gold)" : "rgba(255,255,255,0.7)",
+                          margin: "4px 0 0",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {item.location}
+                      </p>
+                    )}
                   </motion.div>
                 </motion.div>
               );
@@ -306,6 +365,114 @@ export default function Portfolio({ variant }: { variant: "dark" | "minimal" }) 
           </div>
         </AnimateIn>
       </div>
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightboxItem && (
+          <motion.div
+            key="lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setLightboxItem(null)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 1000,
+              background: "rgba(0,0,0,0.96)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: isMobile ? "16px" : "24px",
+              cursor: "zoom-out",
+            }}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setLightboxItem(null)}
+              style={{
+                position: "absolute",
+                top: "20px",
+                right: "20px",
+                background: "rgba(255,255,255,0.08)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                color: "#fff",
+                width: "44px",
+                height: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+            >
+              <X size={18} />
+            </button>
+
+            {/* Image + caption */}
+            <motion.div
+              initial={{ scale: 0.93, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.93, opacity: 0 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                maxWidth: "1000px",
+                width: "100%",
+                cursor: "default",
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={lightboxItem.photo}
+                alt={lightboxItem.title}
+                style={{
+                  width: "100%",
+                  maxHeight: isMobile ? "65vh" : "76vh",
+                  objectFit: "contain",
+                  display: "block",
+                }}
+              />
+              <div
+                style={{
+                  paddingTop: "16px",
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: "12px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <p
+                  className="heading-serif"
+                  style={{
+                    color: "#F5F0E8",
+                    fontSize: isMobile ? "0.95rem" : "1.05rem",
+                    fontStyle: "italic",
+                    margin: 0,
+                  }}
+                >
+                  {lightboxItem.title}
+                </p>
+                <p
+                  style={{
+                    color: "#C9A85C",
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    margin: 0,
+                  }}
+                >
+                  {lightboxItem.location} · {lightboxItem.category}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
